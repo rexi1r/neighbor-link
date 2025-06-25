@@ -53,9 +53,11 @@ const server = http.createServer(async (req, res) => {
 });
 
 // Start the server on port 8080
-server.listen(8080, () => {
-  console.log('Server listening on port 8080');
-});
+if (require.main === module) {
+  server.listen(8080, () => {
+    console.log('Server listening on port 8080');
+  });
+}
 
 /**
  * Validate the 'id' format (MD5 hash of a MAC address).
@@ -111,3 +113,5 @@ function sendResponse(res, statusCode, message, contentType = 'text/plain') {
   res.setHeader('Content-Type', contentType);
   res.end(message);
 }
+
+module.exports = { isValidId };
