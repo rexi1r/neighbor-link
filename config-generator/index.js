@@ -115,3 +115,5 @@ function sendResponse(res, statusCode, message, contentType = 'text/plain') {
   res.setHeader('Content-Type', contentType);
   res.end(message);
 }
+
+module.exports = { isValidId };
