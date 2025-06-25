@@ -121,7 +121,7 @@ function updateGuest(status) {
 function updateReach(status) {
     if (status == "disconnect") {
         btnReach.classList.add('btn-danger')
-        btnReach.classList.remove('btn-suncess')
+        btnReach.classList.remove('btn-success')
         btnReach.classList.remove('btn-warning')
     }
     if (status == "disable") {
@@ -139,7 +139,7 @@ function updateReach(status) {
 function updateVpn(status) {
     if (status == "disconnected") {
         btnVPN.classList.add('btn-danger')
-        btnVPN.classList.remove('btn-suncess')
+        btnVPN.classList.remove('btn-success')
         btnVPN.classList.remove('btn-warning')
     }
     if (status == "noconfig") {
