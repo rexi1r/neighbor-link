@@ -4,6 +4,8 @@ let users = [
     {
         username: 'loading ...',
         password: 'loading ...',
+        macs: '',
+        max: ''
     }
 ]
 let fetch_users= []
@@ -64,7 +66,9 @@ function transformValuesToObject(values) {
     for (const key in values) {
         const user = {
             username: key,
-            password: values[key].password, // Assuming the password is the same as the username
+            password: values[key].password,
+            macs: values[key].macs || '',
+            max: values[key].max || ''
         };
 
         users.push(user);
@@ -118,6 +122,8 @@ function editUser(username) {
         // Populate the form fields with user data
         document.getElementById('newUsername').value = user.username;
         document.getElementById('newPassword').value = user.password;
+        document.getElementById('allowedMacs').value = user.macs || '';
+        document.getElementById('maxDevices').value = user.max || '';
         document.getElementById('modify-user-btn').value = "Update User";
     }
 }
@@ -148,17 +154,23 @@ function deleteUserModal(username) {
 function addUser() {
     const newUsername = document.getElementById('newUsername').value;
     const newPassword = document.getElementById('newPassword').value;
+    const allowedMacs = document.getElementById('allowedMacs').value;
+    const maxDevices = document.getElementById('maxDevices').value;
 
     // Check for duplicate username
     const existingUser = users.find(u => u.username === newUsername);
     if (existingUser) {
         // Replace the existing user's data
         existingUser.password = newPassword;
+        existingUser.macs = allowedMacs;
+        existingUser.max = maxDevices;
     } else {
         // Add the new user
         users.push({
             username: newUsername,
-            password: newPassword
+            password: newPassword,
+            macs: allowedMacs,
+            max: maxDevices
         });
     }
 
@@ -167,12 +179,16 @@ function addUser() {
     // Clear the input fields
     document.getElementById('newUsername').value = '';
     document.getElementById('newPassword').value = '';
+    document.getElementById('allowedMacs').value = '';
+    document.getElementById('maxDevices').value = '';
     document.getElementById('modify-user-btn').value = "Add User";
     SaveIN();
 }
 
 function resetForm() {
     document.getElementById('modify-user-btn').value = "Add User";
+    document.getElementById('allowedMacs').value = '';
+    document.getElementById('maxDevices').value = '';
 }
 
 const UCI_GET_USERS=["uci", "get", {"config":"users"}]
@@ -201,8 +217,11 @@ function SaveIN(){
         
         var params = {
             "values" : {
-                password: element.password            }
-        }
+                password: element.password
+            }
+        };
+        if(element.macs !== '') params["values"].macs = element.macs;
+        if(element.max !== '') params["values"].max = element.max;
 
         if ( isUsernameInArray(element.username,fetch_users) ){
             params["section"] = element.username;

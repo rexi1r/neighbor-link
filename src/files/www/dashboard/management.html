@@ -31,6 +31,14 @@
                             <label for="newPassword" class="form-label">Password</label>
                             <input type="text" class="form-control" id="newPassword">
                         </div>
+                        <div class="mb-3">
+                            <label for="allowedMacs" class="form-label">Allowed MACs (comma separated)</label>
+                            <input type="text" class="form-control" id="allowedMacs">
+                        </div>
+                        <div class="mb-3">
+                            <label for="maxDevices" class="form-label">Max Devices</label>
+                            <input type="number" class="form-control" id="maxDevices" min="0">
+                        </div>
                         <input type="button" id="modify-user-btn" class="btn btn-success" value="Add User" onclick="addUser()">
                         <button type="reset" class="btn btn-outline-dark" onclick="resetForm()">Cancel</button>
                     </form>

@@ -22,3 +22,6 @@ Both the administrator and users can utilize either or both methods according to
 The CityLink solution was designed with an understanding of, and in response to, the dual structure of Iran's internet - differences in domestic and international internet censorship.
 
 The solution includes integrating a cloud server, empowering users to create personal servers, and implementing firewalls to conceal satellite connections. An assessment of Iranian internet providers favored fiber internet and point-to-point connections for their performance and security.
+
+## User Management Enhancements
+Users can limit the number of devices per account using the **Max Devices** field and optionally set a comma separated list of permitted MAC addresses. A helper script `user_stats.sh` prints traffic usage per user based on firewall counters.
