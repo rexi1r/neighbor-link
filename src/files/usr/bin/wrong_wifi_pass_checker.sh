@@ -34,7 +34,7 @@ check() {
 
         IP=$(ifconfig $interface | grep 'inet addr' | awk -F: '{print $2}' | awk '{print $1}')
 
-        counterfile="/tmp/$device.value"
+        counterfile="/tmp/${interface}.value"
         if [ -z "$IP" ]; then
             echo $interface has not ip
             if [ ! -f "$counterfile" ]; then

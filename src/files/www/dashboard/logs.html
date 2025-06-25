@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Connection Logs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <script type="text/javascript" src="scripts/common/bootstrap.bundle.min.js" defer></script>
+    <script type="text/javascript" src="scripts/common/loading.js" defer></script>
+    <script type="text/javascript" src="scripts/common/ubus.js" defer></script>
+    <script type="text/javascript" src="scripts/page-specific/logs.js" defer></script>
+</head>
+<body>
+<div class="container mt-3">
+    <a id="back-btn-href" class="btn btn-outline-secondary mb-3" href="dashboard.html">Back to Dashboard</a>
+    <div class="btn-group mb-3" role="group">
+        <button class="btn btn-secondary" data-type="starlink">Starlink</button>
+        <button class="btn btn-secondary" data-type="iran">Iran</button>
+        <button class="btn btn-secondary" data-type="vpn">VPN</button>
+        <button class="btn btn-secondary" data-type="citylink">CityLink</button>
+    </div>
+    <pre id="log-content" class="bg-body-secondary p-2" style="height:60vh; overflow:auto;"></pre>
+</div>
+<div id="overlay" class="display=none flex-column align-items-center mb-3">
+    <div class="spinner-border text-light mb-2" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="fs-4 px-4 py-3" role="message">
+        <h6 id="overlay_message" class="text text-light">Loading...</h6>
+    </div>
+</div>
+</body>
+</html>

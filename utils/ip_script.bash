@@ -27,7 +27,7 @@ do
   # Increment the counter
   counter=$((counter + 1))
 
-  # If 100 lines are read, write to output file
+  # If 60 lines are read, write to output file
   if [ $counter -eq 60 ]; then
 
     index=$((index + 1))
