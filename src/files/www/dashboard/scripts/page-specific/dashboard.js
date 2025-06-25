@@ -13,6 +13,7 @@ const btnGuest = document.getElementById('guest-btn')
 const btnReach = document.getElementById('reach-btn')
 const btnFirmware = document.getElementById('firmware-btn')
 const btnLogs = document.getElementById('logs-btn')
+const btnCheck = document.getElementById('check-btn')
 
 btnStarlink.onclick=function (e){
     window.location.href = "wifi.html?ref=dashboard";
@@ -37,6 +38,9 @@ btnFirmware.onclick=function (e){
 }
 btnLogs.onclick=function (e){
     window.location.href = "logs.html?ref=dashboard";
+}
+btnCheck.onclick=function(e){
+    window.location.href = "check.html?ref=dashboard";
 }
 
 
