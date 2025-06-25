@@ -350,3 +350,8 @@ if [ "$1" = "monitor-log" ]; then
         response "No log"
     fi
 fi
+
+if [ "$1" == "check-link" ];then
+    result=$(sh /usr/bin/check_link.sh "$2" "$3")
+    response "$result"
+fi
