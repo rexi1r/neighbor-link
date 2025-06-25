@@ -11,7 +11,7 @@ const btnSettings = document.getElementById('settings-btn')
 const btnVPN = document.getElementById('vpn-btn')
 const btnGuest = document.getElementById('guest-btn')
 const btnReach = document.getElementById('reach-btn')
-const btnFrimware = document.getElementById('frimware-btn')
+const btnFirmware = document.getElementById('firmware-btn')
 const btnLogs = document.getElementById('logs-btn')
 
 btnStarlink.onclick=function (e){
@@ -32,7 +32,7 @@ btnGuest.onclick=function (e){
 btnReach.onclick=function (e){
     window.location.href = "citylink.html?ref=dashboard";
 }
-btnFrimware.onclick=function (e){
+btnFirmware.onclick=function (e){
     window.location.href = "firmware.html?ref=dashboard";
 }
 btnLogs.onclick=function (e){
