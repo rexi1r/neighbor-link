@@ -335,3 +335,18 @@ if [ "$1" == "wireguard-set-conf" ];then
     echo "$config_base64" | base64 -d > /peer.json
     response "Done"
 fi
+
+if [ "$1" = "monitor-log" ]; then
+    case "$2" in
+        starlink) file="/var/log/starlink.log" ;;
+        iran) file="/var/log/iran.log" ;;
+        vpn) file="/var/log/vpn.log" ;;
+        citylink) file="/var/log/citylink.log" ;;
+        *) file="/var/log/link-monitor.log" ;;
+    esac
+    if [ -f "$file" ]; then
+        response "$(tail -n 50 $file)"
+    else
+        response "No log"
+    fi
+fi
