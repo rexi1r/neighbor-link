@@ -66,23 +66,43 @@ if ! validate_mac_address $CLIENT_MAC ;then
 fi
 
 userAuth=$(uci get users.$USERNAME.password)
-if [ $? = 0 -a "$PASSWORD" = "$userAuth" ]; then
+if [ $? = 0 ] && [ "$PASSWORD" = "$userAuth" ]; then
+
+  whitelist=$(uci -q get users.$USERNAME.macs)
+  current_macs=$(uci -q get users.$USERNAME.current_macs)
+  max_devices=$(uci -q get users.$USERNAME.max)
+
+  allowed=0
+  if [ -n "$whitelist" ]; then
+    for m in $(echo "$whitelist" | tr ',' ' '); do
+      [ "$m" = "$CLIENT_MAC" ] && allowed=1
+    done
+    [ "$allowed" -eq 0 ] && { echo "unauthorized device"; exit 1; }
+  else
+    list=$(echo "$current_macs" | tr ',' ' ')
+    echo " $list " | grep -iq " $CLIENT_MAC " && allowed=1 || allowed=0
+    if [ $allowed -eq 0 ]; then
+      count=$(echo $list | wc -w)
+      if [ -n "$max_devices" ] && [ "$max_devices" -gt 0 ] && [ $count -ge $max_devices ]; then
+        echo "max devices reached"
+        exit 1
+      fi
+      list="$list $CLIENT_MAC"
+      list=$(echo $list | xargs)
+      uci set users.$USERNAME.current_macs="$list"
+    fi
+  fi
 
   FW_RULE_ID=$(sh /usr/bin/manage_mac_access.sh check $CLIENT_MAC)
-  
-  lastMAC=$(uci get users.$USERNAME.mac)
-  if [ -n "$lastMAC" ] && [ "$lastMAC" != "$CLIENT_MAC" ];then
-    sh /usr/bin/manage_mac_access.sh remove $lastMAC
-  fi
   if ! is_positive_number $FW_RULE_ID ; then
     sh /usr/bin/manage_mac_access.sh add $CLIENT_MAC
   fi
-  uci set users.$USERNAME.mac="$CLIENT_MAC"
-  uci commit users 
-  
+
+  uci commit users
   echo "_SUCCESS_"
   exit 0
 else
   echo "not match user pass"
   exit 1
 fi
+
