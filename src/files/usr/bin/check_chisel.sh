@@ -17,7 +17,7 @@ while IFS= read -r line; do
 
     if [ ! -z "$HAS_CONNECTED" ]; then
         last_status="Connected"
-    elif [ ! -z "$HAS_CONNECTED" ]; then
+    elif [ ! -z "$HAS_CONNECTING" ]; then
         last_status="Connecting"
     else
         last_status="other"

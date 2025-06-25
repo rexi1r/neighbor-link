@@ -39,7 +39,7 @@ uci set network.wgclient.public_key=${WG_PUB}
 uci set network.wgclient.route_allowed_ips="0"
 uci set network.wgclient.endpoint_host=${WG_SERV}
 uci set network.wgclient.endpoint_port=${WG_PORT}
-if [ "$WG_PSK" -ne "null" ];then
+if [ "$WG_PSK" != "null" ]; then
     uci set network.wgclient.preshared_key="${WG_PSK}"
 fi
 uci set network.wgclient.persistent_keepalive="25"
