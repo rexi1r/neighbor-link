@@ -4,6 +4,10 @@ STARLINK_IF="wwan"
 IRAN_IF="wan"
 CITY_IF="wan2"
 
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m'
+
 link="$1"
 host="$2"
 
@@ -22,8 +26,12 @@ case "$link" in
         ;;
     vpn)
         status=$(sh /usr/bin/wg_scripts.sh status)
-        echo "$status" | grep '__Connected__' >/dev/null 2>&1 && { echo "OK"; exit 0; }
-        echo "FAIL"; exit 0
+        echo "$status" | grep '__Connected__' >/dev/null 2>&1 && {
+            printf '%b\n' "${GREEN}OK${NC}"
+            exit 0
+        }
+        printf '%b\n' "${RED}FAIL${NC}"
+        exit 0
         ;;
     *)
         echo "UNKNOWN"
@@ -32,7 +40,7 @@ case "$link" in
 esac
 
 if ping -I "$iface" -c1 -W2 "$host" >/dev/null 2>&1; then
-    echo "OK"
+    printf '%b\n' "${GREEN}OK${NC}"
 else
-    echo "FAIL"
+    printf '%b\n' "${RED}FAIL${NC}"
 fi
