@@ -37,6 +37,7 @@ fi
 # Default values
 DEFAULT_CHISEL_VERSION="1.10.0"
 DEFAULT_CHISEL_PORT=8080
+PANEL_PORT=8081
 
 
 # User options
@@ -94,6 +95,55 @@ function generate_random_number() {
   done
 
   echo "$random_number"
+}
+
+# Function to setup a simple monitoring panel
+setup_panel() {
+    apt install vnstat -y
+    PANEL_USER="panel"
+    PANEL_PASS=$(openssl rand -hex 12)
+
+    mkdir -p /var/www/panel
+    htpasswd -bc /etc/nginx/panel.htpasswd "$PANEL_USER" "$PANEL_PASS"
+
+    cat >/usr/local/bin/update_panel.sh <<'EOF'
+#!/bin/bash
+TRAFFIC=$(vnstat --oneline | awk -F';' '{print "RX: "$9" TX: "$10}')
+CITY_STATUS=$(systemctl is-active chisel || echo inactive)
+cat >/var/www/panel/index.html <<EOT
+<!DOCTYPE html>
+<html>
+<head><title>Server Panel</title></head>
+<body>
+<h1>Server Traffic Usage</h1>
+<p>$TRAFFIC</p>
+<h2>City Link Client Status</h2>
+<p>$CITY_STATUS</p>
+</body>
+</html>
+EOT
+EOF
+
+    chmod +x /usr/local/bin/update_panel.sh
+    /usr/local/bin/update_panel.sh
+    echo "* * * * * root /usr/local/bin/update_panel.sh" >/etc/cron.d/panel_update
+
+    cat >/etc/nginx/conf.d/panel.conf <<EOF
+server {
+    listen ${PANEL_PORT};
+    server_name _;
+    root /var/www/panel;
+    location / {
+        auth_basic "Panel";
+        auth_basic_user_file /etc/nginx/panel.htpasswd;
+    }
+}
+EOF
+
+    ufw allow ${PANEL_PORT}/tcp
+    systemctl reload nginx
+
+    echo "Panel credentials - Username: $PANEL_USER Password: $PANEL_PASS"
 }
 
 
@@ -166,6 +216,7 @@ deploy_service() {
         ufw allow 443/tcp
         ufw allow $EXT_PORT1/tcp
         ufw allow $EXT_PORT2/tcp
+        ufw allow ${PANEL_PORT}/tcp
         ufw enable
 
 
@@ -219,6 +270,9 @@ deploy_service() {
             systemctl restart squid
 
         fi
+
+        # Setup monitoring panel
+        setup_panel
 
         # Generate and display string
         generate_string
