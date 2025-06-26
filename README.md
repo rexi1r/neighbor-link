@@ -25,3 +25,4 @@ The solution includes integrating a cloud server, empowering users to create per
 
 ## User Management Enhancements
 Users can limit the number of devices per account using the **Max Devices** field and optionally set a comma separated list of permitted MAC addresses. A helper script `user_stats.sh` prints traffic usage per user based on firewall counters.
+The management page table now lists these values beside each username so administrators can quickly review configured limits.
