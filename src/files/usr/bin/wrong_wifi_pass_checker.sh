@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/bin/sh
 
 # Define your space-separated string variable
 DEVICES="wlansta_2g wlansta_5g"
