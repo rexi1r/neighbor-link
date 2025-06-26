@@ -1,9 +1,10 @@
 var checkUpdateButton = document.getElementById('check-update');
 var doUpdateButton = document.getElementById("do-update")
+var updateUrlInput = document.getElementById("update-url")
 
 checkUpdateButton.onclick = function(e){
     loading(true,"Checking for update")
-    const UPDATE_CHECK=["file","exec",{"command":"router_updater.sh","params":[ "Check" ]}];
+    const UPDATE_CHECK=["file","exec",{"command":"router_updater.sh","params":[ "Check", updateUrlInput.value ]}];
     ubus_call(UPDATE_CHECK,function(chunk){
         loading(false)
         if(chunk.length > 1){
@@ -27,7 +28,7 @@ checkUpdateButton.onclick = function(e){
 }
 
 doUpdateButton.onclick = function(e){
-    const UPDATE_DO=["file","exec",{"command":"router_updater.sh","params":[ "Do" ]}];
+    const UPDATE_DO=["file","exec",{"command":"router_updater.sh","params":[ "Do", updateUrlInput.value ]}];
     const SYSUPGRADE_N=["file","exec",{"command":"router_updater.sh","params":[ "Upgrade" ]}];
     loading(true,"Preparing for upgrade")
     ubus_call(UPDATE_DO,function(chunk){
