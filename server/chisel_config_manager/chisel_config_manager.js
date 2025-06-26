@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const path = require('path');
 const app = express();
 const PORT = 19119;
 
@@ -77,6 +78,10 @@ app.listen(PORT, () => {
 // Function to check and create file with empty JSON object
 function checkAndCreateFile(filePath) {
     if (!fs.existsSync(filePath)) {
+        const dir = path.dirname(filePath);
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
         fs.writeFileSync(filePath, '{}', 'utf8');
         console.log(`Created file: ${filePath}`);
     } else {
