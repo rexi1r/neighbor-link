@@ -22,3 +22,6 @@ config uhttpd 'portal'
         option network_timeout '30'
         option http_keepalive '20'
         option tcp_keepalive '1'
+list index_page "splash.html"
+option no_dirlists "1"
+
