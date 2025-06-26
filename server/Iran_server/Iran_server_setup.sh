@@ -106,25 +106,8 @@ setup_panel() {
     mkdir -p /var/www/panel
     htpasswd -bc /etc/nginx/panel.htpasswd "$PANEL_USER" "$PANEL_PASS"
 
-    cat >/usr/local/bin/update_panel.sh <<'EOF'
-#!/bin/bash
-TRAFFIC=$(vnstat --oneline | awk -F';' '{print "RX: "$9" TX: "$10}')
-CITY_STATUS=$(systemctl is-active chisel || echo inactive)
-cat >/var/www/panel/index.html <<EOT
-<!DOCTYPE html>
-<html>
-<head><title>Server Panel</title></head>
-<body>
-<h1>Server Traffic Usage</h1>
-<p>$TRAFFIC</p>
-<h2>City Link Client Status</h2>
-<p>$CITY_STATUS</p>
-</body>
-</html>
-EOT
-EOF
-
-    chmod +x /usr/local/bin/update_panel.sh
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    install -m 755 "${SCRIPT_DIR}/update_panel.sh" /usr/local/bin/update_panel.sh
     /usr/local/bin/update_panel.sh
     echo "* * * * * root /usr/local/bin/update_panel.sh" >/etc/cron.d/panel_update
 
