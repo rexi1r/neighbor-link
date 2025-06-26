@@ -16,6 +16,8 @@ check_iface(){
     iface=$1
     host=$2
     file=$3
+    device=$(ifstatus "$iface" 2>/dev/null | jq -r '.device // .l3_device')
+    [ -n "$device" ] && [ "$device" != "null" ] && iface="$device"
     if ping -I "$iface" -c1 -W2 "$host" >/dev/null 2>&1; then
         echo "$(date +"%F %T") [$host] OK" >> "$file"
     else
