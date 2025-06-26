@@ -19,9 +19,11 @@ config uhttpd 'portal'
         option rfc1918_filter '1'
         option max_requests '3'
         option max_connections '100'
+        option cgi_prefix '/cgi-bin'
+        list lua_prefix '/auth.lua=/www/portal/auth.lua'
         option network_timeout '30'
         option http_keepalive '20'
         option tcp_keepalive '1'
-list index_page "splash.html"
-option no_dirlists "1"
+        list index_page "splash.html"
+        option no_dirlists "1"
 
