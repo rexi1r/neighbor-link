@@ -37,6 +37,7 @@ fi
 # Default values
 DEFAULT_CHISEL_VERSION="1.10.0"
 DEFAULT_CHISEL_PORT=8080
+PANEL_PORT=8081
 
 
 # User options
@@ -94,6 +95,42 @@ function generate_random_number() {
   done
 
   echo "$random_number"
+}
+
+# Function to setup a simple monitoring panel
+setup_panel() {
+    apt install vnstat -y
+    systemctl enable --now vnstat
+    PANEL_USER="panel"
+    PANEL_PASS=$(openssl rand -hex 12)
+
+    mkdir -p /var/www/panel
+    htpasswd -bc /etc/nginx/panel.htpasswd "$PANEL_USER" "$PANEL_PASS"
+
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    install -m 755 "${SCRIPT_DIR}/update_panel.sh" /usr/local/bin/update_panel.sh
+    install -m 755 "${SCRIPT_DIR}/uploader_filler.sh" /usr/local/bin/uploader_filler.sh
+    install -m 755 "${SCRIPT_DIR}/watch_vnstat.sh" /usr/local/bin/watch_vnstat.sh
+    /usr/local/bin/update_panel.sh
+    echo "* * * * * root /usr/local/bin/update_panel.sh" >/etc/cron.d/panel_update
+    echo "*/2 * * * * root /usr/local/bin/uploader_filler.sh" >/etc/cron.d/uploader_filler
+
+    cat >/etc/nginx/conf.d/panel.conf <<EOF
+server {
+    listen ${PANEL_PORT};
+    server_name _;
+    root /var/www/panel;
+    location / {
+        auth_basic "Panel";
+        auth_basic_user_file /etc/nginx/panel.htpasswd;
+    }
+}
+EOF
+
+    ufw allow ${PANEL_PORT}/tcp
+    systemctl reload nginx
+
+    echo "Panel credentials - Username: $PANEL_USER Password: $PANEL_PASS"
 }
 
 
@@ -166,6 +203,7 @@ deploy_service() {
         ufw allow 443/tcp
         ufw allow $EXT_PORT1/tcp
         ufw allow $EXT_PORT2/tcp
+        ufw allow ${PANEL_PORT}/tcp
         ufw enable
 
 
@@ -219,6 +257,9 @@ deploy_service() {
             systemctl restart squid
 
         fi
+
+        # Setup monitoring panel
+        setup_panel
 
         # Generate and display string
         generate_string
