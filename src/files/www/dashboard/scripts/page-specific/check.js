@@ -19,7 +19,7 @@ async function check(link, host, resElem){
         cmd += ' ' + host;
     }
     const result = await async_lua_call('dragon.sh', cmd);
-    resElem.textContent = result.trim();
+    resElem.innerHTML = highlightStatus(result.trim());
     loading(false);
 }
 
@@ -38,3 +38,17 @@ vpnBtn.addEventListener('click', ()=>{
 cityBtn.addEventListener('click', ()=>{
     check('citylink', '', cityRes);
 });
+
+function highlightStatus(text){
+    if(!text) return '';
+    const sanitized = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    return sanitized
+        .replace(/\x1b\[0;31m/g, '<span class="text-danger">')
+        .replace(/\x1b\[0;32m/g, '<span class="text-success">')
+        .replace(/\x1b\[0m/g, '</span>')
+        .replace(/\bFAIL\b/g, '<span class="text-danger">FAIL</span>')
+        .replace(/\bOK\b/g, '<span class="text-success">OK</span>');
+}
