@@ -4,7 +4,7 @@
 deviceModel=$(cat /proc/device-tree/model)
 deviceModel=$(echo "$deviceModel" | awk '{print tolower($0)}' | tr ' ' '_')
 
-github_api_url=https://api.github.com/repos/nasnet-community/neighbor-link/releases/latest
+github_api_url=${2:-https://api.github.com/repos/nasnet-community/neighbor-link/releases/latest}
 
 json_response=$(curl -s "$github_api_url")
 
