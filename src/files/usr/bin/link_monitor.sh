@@ -17,20 +17,21 @@ check_iface(){
     host=$2
     file=$3
     if ping -I "$iface" -c1 -W2 "$host" >/dev/null 2>&1; then
-        echo "$(date +"%F %T") OK" >> "$file"
+        echo "$(date +"%F %T") [$host] OK" >> "$file"
     else
-        echo "$(date +"%F %T") FAIL" >> "$file"
+        echo "$(date +"%F %T") [$host] FAIL" >> "$file"
     fi
+    tail -n 1000 "$file" > "$file.tmp" && mv "$file.tmp" "$file"
 }
 
 check_vpn(){
     status=$(sh /usr/bin/wg_scripts.sh status)
-    echo "$status" | grep '__Connected__' >/dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        echo "$(date +"%F %T") OK" >> "$VPN_LOG"
+    if echo "$status" | grep '__Connected__' >/dev/null 2>&1; then
+        echo "$(date +"%F %T") [vpn] OK" >> "$VPN_LOG"
     else
-        echo "$(date +"%F %T") FAIL" >> "$VPN_LOG"
+        echo "$(date +"%F %T") [vpn] FAIL" >> "$VPN_LOG"
     fi
+    tail -n 1000 "$VPN_LOG" > "$VPN_LOG.tmp" && mv "$VPN_LOG.tmp" "$VPN_LOG"
 }
 
 while true; do
