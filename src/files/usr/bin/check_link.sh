@@ -39,6 +39,10 @@ case "$link" in
         ;;
 esac
 
+# Determine the actual network device for the interface
+device=$(ifstatus "$iface" 2>/dev/null | jq -r '.device // .l3_device')
+[ -n "$device" ] && [ "$device" != "null" ] && iface="$device"
+
 if ping -I "$iface" -c1 -W2 "$host" >/dev/null 2>&1; then
     printf '%b\n' "${GREEN}OK${NC}"
 else
