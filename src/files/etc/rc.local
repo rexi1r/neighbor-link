@@ -103,8 +103,8 @@ do
         uci set wireless.guest_$BAND.mode='ap'
         uci set wireless.guest_$BAND.network='Guest'
         uci set wireless.guest_$BAND.encryption='psk2'
-        uci set wireless.guest_$BAND.key='20Redm@ster2025'
-        uci set wireless.guest_$BAND.ssid="Guest-WiFi-$BAND"
+        uci set wireless.guest_$BAND.key='20RedM@ster2025R'
+        uci set wireless.guest_$BAND.ssid="Asiateckguest-$BAND"
         uci set wireless.guest_$BAND.disabled='0'
         uci set wireless.guest_$BAND.ifname="wlanguest_$BAND"
 
