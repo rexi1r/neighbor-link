@@ -100,6 +100,7 @@ function generate_random_number() {
 # Function to setup a simple monitoring panel
 setup_panel() {
     apt install vnstat -y
+
     systemctl enable --now vnstat
     PANEL_USER="panel"
     PANEL_PASS=$(openssl rand -hex 12)
@@ -109,11 +110,13 @@ setup_panel() {
 
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     install -m 755 "${SCRIPT_DIR}/update_panel.sh" /usr/local/bin/update_panel.sh
+
     install -m 755 "${SCRIPT_DIR}/uploader_filler.sh" /usr/local/bin/uploader_filler.sh
     install -m 755 "${SCRIPT_DIR}/watch_vnstat.sh" /usr/local/bin/watch_vnstat.sh
     /usr/local/bin/update_panel.sh
     echo "* * * * * root /usr/local/bin/update_panel.sh" >/etc/cron.d/panel_update
     echo "*/2 * * * * root /usr/local/bin/uploader_filler.sh" >/etc/cron.d/uploader_filler
+
 
     cat >/etc/nginx/conf.d/panel.conf <<EOF
 server {

@@ -1,4 +1,5 @@
 #!/bin/bash
+
 DATA=$(vnstat -i eth0 --oneline b 2>/dev/null)
 RX=$(echo "$DATA" | awk -F';' '{print $9}')
 TX=$(echo "$DATA" | awk -F';' '{print $10}')
