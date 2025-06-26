@@ -12,6 +12,6 @@ config login
         option username 'routro'
         #You can generate these with uhttpd -m secret
         # TODO : this password should not be hardcoded and should be generate in first setup steps
-        option password '$1$$pnSmUg4O3K/kUup95Gg3E1'
+        option password '$1$$GbqCv9RBssO9Jxln3EFfS1'
         list read routrouser
         list write routrouser
