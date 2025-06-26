@@ -103,8 +103,10 @@ function renderUserList() {
     users.forEach((user, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${index+1}</td>
+            <td>${index + 1}</td>
             <td>${user.username}</td>
+            <td>${user.max ? user.max : 'No limit'}</td>
+            <td>${user.macs ? user.macs : 'Any'}</td>
             <td>
                 <button onclick="editUser('${user.username}')" type="button" class="btn btn-primary">Edit</button>
                 <button onclick="deleteUserModal('${user.username}')" type="button" class="btn btn-danger">Delete</button>
