@@ -100,7 +100,7 @@ or appended to the query string of the authtarget link:
 			var password = document.getElementById('password').value;
 
 			// Build the URL
-			var authUrl = `/auth?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+                        var authUrl = `/auth.lua?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
 
 			// Redirect to the constructed URL
 			window.location.href = authUrl;
