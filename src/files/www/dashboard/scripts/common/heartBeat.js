@@ -2,6 +2,7 @@ const toastLiveExample = document.getElementById('liveToast')
 const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
 var toastShowCount = 0;
 var isSet=false
+const buildVersionLabel = document.getElementById('build-version')
 function heartBeat() {
     const Device_ID=["uci", "get", {"config":"routro"}];
     ubus_call(Device_ID,function(chunk){
@@ -10,13 +11,16 @@ function heartBeat() {
             toastShowCount++
         } 
         else if(chunk[1]?.values?.firmware?.version){
+            const currentVersion = chunk[1].values.firmware.version
+            if(buildVersionLabel){
+                buildVersionLabel.textContent = `Build version ${currentVersion}`
+            }
             if(isSet==false){
                 const versionSeen = localStorage.getItem("opr-version-seen");
-                const currentVersion = chunk[1]?.values?.firmware?.version
                 if(currentVersion != versionSeen){
                     localStorage.setItem("opr-dashboard-seen","false")
                 }
-                localStorage.setItem("opr-version-seen",chunk[1]?.values?.firmware?.version);
+                localStorage.setItem("opr-version-seen", currentVersion);
                 isSet=true;
             }
         }
