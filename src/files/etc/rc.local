@@ -80,10 +80,10 @@ do
         uci set wireless.default_$RADIO.device="$RADIO"
         uci set wireless.default_$RADIO.network='lan'
         uci set wireless.default_$RADIO.mode='ap'
-        uci set wireless.default_$RADIO.ssid="OpenWrt-$BAND"
+        uci set wireless.default_$RADIO.ssid="openParsonline-$BAND"
         uci set wireless.default_$RADIO.disabled='0'
         uci set wireless.default_$RADIO.encryption='psk2'
-        uci set wireless.default_$RADIO.key='S7v!5Dn@8gFp#4L'
+        uci set wireless.default_$RADIO.key='20Redm@ster2025'
         uci set wireless.default_$RADIO.ifname="wlanap_$BAND"
 
         # Set up wifinet1 configuration
@@ -103,7 +103,7 @@ do
         uci set wireless.guest_$BAND.mode='ap'
         uci set wireless.guest_$BAND.network='Guest'
         uci set wireless.guest_$BAND.encryption='psk2'
-        uci set wireless.guest_$BAND.key='S7v!5Dn@8gFp#4L'
+        uci set wireless.guest_$BAND.key='20Redm@ster2025'
         uci set wireless.guest_$BAND.ssid="Guest-WiFi-$BAND"
         uci set wireless.guest_$BAND.disabled='0'
         uci set wireless.guest_$BAND.ifname="wlanguest_$BAND"
