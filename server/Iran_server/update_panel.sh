@@ -13,6 +13,12 @@ else
   RATIO="N/A"
 fi
 CITY_STATUS=$(systemctl is-active chisel || echo inactive)
+REVERSE_STATE=$(ss -ntp 2>/dev/null | grep chisel | grep ESTAB)
+if [[ -n "$REVERSE_STATE" ]]; then
+  CONNECTION_STATE="connected"
+else
+  CONNECTION_STATE="disconnected"
+fi
 cat >/var/www/panel/index.html <<EOT
 <!DOCTYPE html>
 <html>
@@ -24,6 +30,8 @@ cat >/var/www/panel/index.html <<EOT
 <p>TX/RX Ratio: ${RATIO}</p>
 <h2>City Link Client Status</h2>
 <p>${CITY_STATUS}</p>
+<h2>Reverse Tunnel</h2>
+<p>${CONNECTION_STATE}</p>
 </body>
 </html>
 EOT
