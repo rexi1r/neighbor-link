@@ -286,6 +286,12 @@ deploy_service() {
 retrieve_service_config() {
     # Implement logic to retrieve active service config
     echo "Retrieving active service config..."
+
+    if [[ ! -f /etc/chisel/clients/client.str ]]; then
+        echo "Warning: /etc/chisel/clients/client.str not found" >&2
+        exit 1
+    fi
+
     KEYSTRING=$(cat /etc/chisel/clients/client.str)
 
     echo ""
