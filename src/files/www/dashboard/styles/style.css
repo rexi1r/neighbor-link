@@ -3,11 +3,6 @@ body {
 }
 
 
-#notif {
-    display: none;
-    justify-content: space-between;
-}
-
 #overlay {
     position: fixed;
     top: 0;
