@@ -7,15 +7,19 @@
 
 STATE_FILE=/var/tmp/uploader_filler_state
 
-RX=$(cat /sys/class/net/eth0/statistics/rx_bytes)
-TX=$(cat /sys/class/net/eth0/statistics/tx_bytes)
+# Network interface to monitor. Can be overridden by setting the NL_INTERFACE
+# environment variable before running this script.
+INTERFACE="${NL_INTERFACE:-eth0}"
+
+RX=$(cat "/sys/class/net/${INTERFACE}/statistics/rx_bytes")
+TX=$(cat "/sys/class/net/${INTERFACE}/statistics/tx_bytes")
 
 if [ ! -f "$STATE_FILE" ]; then
   echo "$RX $TX" > "$STATE_FILE"
   exit 0
 fi
 
-read PREV_RX PREV_TX < "$STATE_FILE"
+read -r PREV_RX PREV_TX < "$STATE_FILE"
 
 RX_DIFF=$(( RX - PREV_RX ))
 TX_DIFF=$(( TX - PREV_TX ))
