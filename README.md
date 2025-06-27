@@ -30,3 +30,4 @@ Another helper script `online_users.sh` reports how many devices are currently c
 
 ## Monitoring Panel and Dummy Traffic
 A simple monitoring panel shows VNStat bandwidth statistics, including a TX/RX ratio updated every minute by `update_panel.sh`. To help keep the ratio reasonable, the helper script `uploader_filler.sh` may upload random data to [transfer.sh](https://transfer.sh) when received traffic greatly exceeds transmitted traffic.
+`uploader_filler.sh` now stores the previous receive and transmit counters in `/var/tmp/uploader_filler_state`. If this file is missing, the current counters are recorded and the script exits without uploading. On subsequent runs it compares the difference in RX and TX bytes since the last invocation and only performs an upload when 80% of the received bytes is still greater than the transmitted bytes. The current counters are always written back to the state file so the next run can determine the delta.
