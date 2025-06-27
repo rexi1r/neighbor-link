@@ -1,8 +1,39 @@
 #!/bin/sh
 # Define the file name and the URL to download from
 FILE="/tmp/chisel"
-# TODO : Some arch is not compatible with this
-ARCH=$(uname -m)
+# Determine architecture for chisel download
+ARCH_RAW=$(uname -m)
+case "$ARCH_RAW" in
+    x86_64)
+        ARCH="amd64"
+        ;;
+    i386|i486|i586|i686)
+        ARCH="386"
+        ;;
+    aarch64*|arm64*)
+        ARCH="arm64"
+        ;;
+    armv7l|armv6l|armv5l|arm*)
+        ARCH="arm"
+        ;;
+    mips64el)
+        ARCH="mips64le"
+        ;;
+    mips64)
+        ARCH="mips64"
+        ;;
+    mipsel)
+        ARCH="mipsle"
+        ;;
+    mips)
+        ARCH="mips"
+        ;;
+    *)
+        logger -t pmaster "Unsupported architecture: $ARCH_RAW"
+        exit 1
+        ;;
+esac
+
 URL="https://holistic-config.s3.us-west-1.amazonaws.com/chisel/chisel_1.10.0_linux_${ARCH}_softfloat"
 
 reverse_string() {
