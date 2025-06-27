@@ -21,7 +21,7 @@ connectButton.onclick = async function(e){
             checkCitylinkLoop(params["SERVER_IP"])
         }
     } else {
-        addCustomAlert("Somthing Went Wrong","Please try Agaign",6000)
+        addCustomAlert("Something Went Wrong.","Please try Again.",6000)
     }
     showLoadingConnectButton(false)
 }
