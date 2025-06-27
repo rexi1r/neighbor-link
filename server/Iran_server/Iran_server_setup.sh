@@ -302,14 +302,30 @@ retrieve_service_config() {
 
 # Function to stop and delete the service
 stop_delete_service() {
-    # Implement logic to stop and delete the service
+    # Stop and remove the chisel service and its configuration
     echo "Stopping and deleting the service..."
+    if systemctl list-units --full -all | grep -q "chisel.service"; then
+        systemctl stop chisel.service >/dev/null 2>&1
+        systemctl disable chisel.service >/dev/null 2>&1
+        rm -f /etc/systemd/system/chisel.service
+        systemctl daemon-reload
+    fi
+
+    # Remove chisel configuration directory
+    rm -rf /etc/chisel
+
+    echo "Service removed."
 }
 
 # Function to show the list of available services
 list_services() {
-    # Implement logic to show the list of available services
     echo "Listing available services..."
+
+    # Show running chisel services
+    systemctl list-units --type=service | grep chisel || true
+
+    echo "\nConfigured clients:"
+    ls -1 /etc/chisel/clients 2>/dev/null || echo "No client configuration files found."
 }
 
 # Main script logic
@@ -317,13 +333,17 @@ while true; do
     echo "Choose an option:"
     echo "1. Deploy the new service"
     echo "2. Retrieve the active service config"
+    echo "3. Stop and delete the service"
+    echo "4. List available services"
     echo "5. Exit"
     read CHOICE
 
     case "$CHOICE" in
         1) deploy_service ;;
         2) retrieve_service_config ;;
+        3) stop_delete_service ;;
+        4) list_services ;;
         5) exit ;;
-        *) echo "Invalid choice. Please select a number from  1, 2 and 5." ;;
+        *) echo "Invalid choice. Please select a number from 1 to 5." ;;
     esac
 done
