@@ -217,21 +217,24 @@ deploy_service() {
 
         if [[ ! -z "$DOMAIN" ]]; then
 
-            # Create nginx config
+            # Create nginx config with basic rate limiting for / requests
             printf  "%s\n"\
+                    "limit_req_zone \$binary_remote_addr zone=req_limit_per_ip:10m rate=5r/m;" \
                     "server {" \
                     "   server_name $DOMAIN;" \
                     "   root /var/www/example.com;" \
                     "   index index.html;" \
                     "   location / {"\
+                    "       limit_req zone=req_limit_per_ip burst=10;"\
                     "       error_page 404 /404.html;"\
                     "    }" \
                     "   listen [::]:80;"\
                     "   listen 80;"\
                     "}" > /etc/nginx/conf.d/chisel_ssl.conf
 
-            # Obtain SSL certificate
+            # Obtain SSL certificate and reload nginx to apply new configuration
             certbot --nginx -d "$DOMAIN" -m info@${DOMAIN} --agree-tos --non-interactive
+            systemctl reload nginx
 
             # Todo : Setup Squid with split tunneling and parent proxy
             echo ".ir" > /etc/squid/domains.txt
