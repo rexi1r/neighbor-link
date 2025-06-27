@@ -198,15 +198,17 @@ if [ "$1" == "infinite-reach-connect" ];then
     /etc/init.d/chisel restart
     /etc/init.d/tinyproxy restart
 
-    sleep 2
-    
+    # Wait for chisel to establish the connection
+    CHISEL_STATUS=""
+    for _i in $(seq 1 30); do
+        CHISEL_STATUS=$(sh /usr/bin/check_chisel.sh)
+        [ "$CHISEL_STATUS" = "Connected" ] && break
+        sleep 1
+    done
+
     STATUS=$(/etc/init.d/chisel status)
-    if [ -z "$STATUS" ] ; then
-        STATUS="null"
-    fi
-        
-    CHISEL_STATUS=$(sh  /usr/bin/check_chisel.sh)
-    
+    [ -z "$STATUS" ] && STATUS="null"
+
     response "$STATUS $CHISEL_STATUS 2"
 fi
 
