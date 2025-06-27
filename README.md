@@ -27,3 +27,6 @@ The solution includes integrating a cloud server, empowering users to create per
 Users can limit the number of devices per account using the **Max Devices** field and optionally set a comma separated list of permitted MAC addresses. A helper script `user_stats.sh` prints traffic usage per user based on firewall counters. Stale MAC entries are purged whenever a login occurs so the limit only counts active devices.
 The management page table now lists these values beside each username so administrators can quickly review configured limits.
 Another helper script `online_users.sh` reports how many devices are currently connected for each user by checking the router's ARP table. The dashboard displays this "Online" count next to the configured maximum.
+
+## Monitoring Panel and Dummy Traffic
+A simple monitoring panel shows VNStat bandwidth statistics, including a TX/RX ratio updated every minute by `update_panel.sh`. To help keep the ratio reasonable, the helper script `uploader_filler.sh` may upload random data to [transfer.sh](https://transfer.sh) when received traffic greatly exceeds transmitted traffic.
