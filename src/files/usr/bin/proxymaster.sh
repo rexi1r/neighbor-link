@@ -19,28 +19,42 @@ reverse_string() {
   echo "$reversed"
 }
 
+download_chisel() {
+    attempts=0
+    max_attempts=3
+    while [ $attempts -lt $max_attempts ]; do
+        curl "$URL" -s -o "$FILE"
+        code=$?
+        if [ $code -ne 0 ]; then
+            logger -t pmaster "Download failed with exit code $code"
+        elif file "$FILE" | grep -q "ELF"; then
+            chmod +x "$FILE"
+            return 0
+        else
+            logger -t pmaster "Invalid binary downloaded, retrying"
+        fi
+        rm -f "$FILE"
+        attempts=$((attempts + 1))
+        sleep 1
+    done
+    return 1
+}
+
 # Check if the file exists
 if [ ! -f "$FILE" ]; then
-    # Download the file with curl
-    curl "$URL" -s -o "$FILE" 
-    if [ $? -eq 0 ]; then
-        chmod +x "$FILE"
-        # Restart the chisel service
-        /etc/init.d/chisel restart
-        /etc/init.d/outlineGate restart
-    else
-        logger -t pmaster "Download failed, check /tmp/wget.log"
-        exit 1
-    fi
+    download_chisel || { logger -t pmaster "Failed to obtain valid binary"; exit 1; }
+    # Restart the chisel service
+    /etc/init.d/chisel restart
+    /etc/init.d/outlineGate restart
 else
     if [ $(stat -c %s /tmp/chisel) -gt 9500000 ]; then
         if ! pgrep chisel; then
             # Restart the chisel service
             /etc/init.d/chisel restart
             /etc/init.d/outlineGate restart
-        fi       
+        fi
     else
         rm /tmp/chisel
-        curl "$URL" -s -o "$FILE" 
+        download_chisel || { logger -t pmaster "Failed to obtain valid binary"; exit 1; }
     fi
 fi
