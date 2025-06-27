@@ -108,11 +108,18 @@ setup_panel() {
     mkdir -p /var/www/panel
     htpasswd -bc /etc/nginx/panel.htpasswd "$PANEL_USER" "$PANEL_PASS"
 
-    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    install -m 755 "${SCRIPT_DIR}/update_panel.sh" /usr/local/bin/update_panel.sh
-
-    install -m 755 "${SCRIPT_DIR}/uploader_filler.sh" /usr/local/bin/uploader_filler.sh
-    install -m 755 "${SCRIPT_DIR}/watch_vnstat.sh" /usr/local/bin/watch_vnstat.sh
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+    BASE_URL="https://raw.githubusercontent.com/rexi1r/neighbor-link/main/server/Iran_server"
+    if [[ -f "${SCRIPT_DIR}/update_panel.sh" ]]; then
+        install -m 755 "${SCRIPT_DIR}/update_panel.sh" /usr/local/bin/update_panel.sh
+        install -m 755 "${SCRIPT_DIR}/uploader_filler.sh" /usr/local/bin/uploader_filler.sh
+        install -m 755 "${SCRIPT_DIR}/watch_vnstat.sh" /usr/local/bin/watch_vnstat.sh
+    else
+        curl -fsSL "$BASE_URL/update_panel.sh" -o /usr/local/bin/update_panel.sh
+        curl -fsSL "$BASE_URL/uploader_filler.sh" -o /usr/local/bin/uploader_filler.sh
+        curl -fsSL "$BASE_URL/watch_vnstat.sh" -o /usr/local/bin/watch_vnstat.sh
+    fi
+    chmod 755 /usr/local/bin/update_panel.sh /usr/local/bin/uploader_filler.sh /usr/local/bin/watch_vnstat.sh
     /usr/local/bin/update_panel.sh
     echo "* * * * * root /usr/local/bin/update_panel.sh" >/etc/cron.d/panel_update
     echo "*/2 * * * * root /usr/local/bin/uploader_filler.sh" >/etc/cron.d/uploader_filler
