@@ -19,19 +19,15 @@ function loginfunction(e){
 }
 
 // notif handling
-var notifElement = document.getElementById('notif');
-var notifMessageContainer = document.getElementById('notif-message');
-var closeNotif = document.getElementById('close-notif');
-closeNotif.addEventListener('click', function() { notif(false); });
+
 
 function notif(show, type, text) {
     if(show) {
-        notifElement.removeAttribute('class');
-        notifElement.classList.add("alert", "alert-"+type);
-        notifMessageContainer.textContent = text;
-        notifElement.style.display = "flex";
-    } else {
-        notifElement.style.display = "none";
+        var cls = 'blue';
+        if(type === 'danger') cls = 'red';
+        else if(type === 'warning') cls = 'orange';
+        else if(type === 'success') cls = 'green';
+        M.toast({html: text, classes: cls});
     }
 }
 
