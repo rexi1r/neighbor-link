@@ -72,6 +72,16 @@ if [ $? = 0 ] && [ "$PASSWORD" = "$userAuth" ]; then
   current_macs=$(uci -q get users.$USERNAME.current_macs)
   max_devices=$(uci -q get users.$USERNAME.max)
 
+  # remove stale MACs that are no longer present in the ARP table
+  list=$(echo "$current_macs" | tr ',' ' ')
+  cleaned=""
+  for m in $list; do
+    grep -iq "$m" /proc/net/arp && cleaned="$cleaned $m"
+  done
+  cleaned=$(echo $cleaned | xargs 2>/dev/null)
+  [ "$cleaned" != "$current_macs" ] && uci set users.$USERNAME.current_macs="$cleaned"
+  current_macs="$cleaned"
+
   allowed=0
   if [ -n "$whitelist" ]; then
     for m in $(echo "$whitelist" | tr ',' ' '); do

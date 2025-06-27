@@ -24,5 +24,5 @@ The CityLink solution was designed with an understanding of, and in response to,
 The solution includes integrating a cloud server, empowering users to create personal servers, and implementing firewalls to conceal satellite connections. An assessment of Iranian internet providers favored fiber internet and point-to-point connections for their performance and security.
 
 ## User Management Enhancements
-Users can limit the number of devices per account using the **Max Devices** field and optionally set a comma separated list of permitted MAC addresses. A helper script `user_stats.sh` prints traffic usage per user based on firewall counters.
+Users can limit the number of devices per account using the **Max Devices** field and optionally set a comma separated list of permitted MAC addresses. A helper script `user_stats.sh` prints traffic usage per user based on firewall counters. Stale MAC entries are purged whenever a login occurs so the limit only counts active devices.
 The management page table now lists these values beside each username so administrators can quickly review configured limits.
