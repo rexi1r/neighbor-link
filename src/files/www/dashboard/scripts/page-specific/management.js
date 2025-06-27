@@ -77,6 +77,18 @@ function transformValuesToObject(values) {
     return users;
 }
 
+function parseUserStats(text){
+    const result = {};
+    if(!text) return result;
+    text.trim().split('\n').forEach(line=>{
+        const parts = line.trim().split(/\s+/);
+        if(parts.length >= 3){
+            result[parts[0]] = {rx: parseInt(parts[1]), tx: parseInt(parts[2])};
+        }
+    });
+    return result;
+}
+
 // const inputValues = {
 //     "captive": {
 //         ".anonymous": false,
@@ -107,6 +119,7 @@ function renderUserList() {
             <td>${user.username}</td>
             <td>${user.max ? user.max : 'No limit'}</td>
             <td>${user.macs ? user.macs : 'Any'}</td>
+            <td>${user.rx !== undefined ? parseInt(user.rx / (1024 * 1024)) + '/' + parseInt(user.tx / (1024 * 1024)) + ' MB' : '0/0 MB'}</td>
             <td>
                 <button onclick="editUser('${user.username}')" type="button" class="btn btn-primary">Edit</button>
                 <button onclick="deleteUserModal('${user.username}')" type="button" class="btn btn-danger">Delete</button>
@@ -200,14 +213,20 @@ const UCI_DEL_USERS=["uci", "delete", {"config":"users"}]
 const UCI_COMMIT=["uci", "commit", {"config":"---"}];
 
 // Function to read data
-function reloadData() {
-    ubus_call(UCI_GET_USERS,function(chunk){
-        console.log(chunk[1]);
+async function reloadData() {
+    ubus_call(UCI_GET_USERS, async function(chunk){
         if(chunk[1]){
             users = transformValuesToObject(chunk[1]["values"]);
-            fetch_users = Object.assign([],users);
+            fetch_users = Object.assign([], users);
+            const statsOutput = await async_lua_call("dragon.sh","user-stats");
+            const statsMap = parseUserStats(statsOutput);
+            users.forEach(u => {
+                if(statsMap[u.username]){
+                    u.rx = statsMap[u.username].rx;
+                    u.tx = statsMap[u.username].tx;
+                }
+            });
             renderUserList();
-            console.log(users);    
         }
     })
 }
@@ -268,7 +287,7 @@ function SaveIN(){
         }
     })
 
-    renderUserList();
+    reloadData();
 }
 function isUsernameInArray(usernameToCheck, arrayToSearch) {
     return arrayToSearch.some(item => item.username === usernameToCheck);

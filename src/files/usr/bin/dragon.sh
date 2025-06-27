@@ -351,6 +351,11 @@ if [ "$1" = "monitor-log" ]; then
     fi
 fi
 
+if [ "$1" = "user-stats" ]; then
+    stats=$(sh /usr/bin/user_stats.sh)
+    response "$stats"
+fi
+
 if [ "$1" == "check-link" ];then
     result=$(sh /usr/bin/check_link.sh "$2" "$3")
     response "$result"
