@@ -61,7 +61,7 @@ convertButton.onclick = async function(e){
     if( parsedKey["type"] == "Domain" ){
         outlineServerIP=await domainToIP(parsedKey["host"])
         if (  outlineServerIP == null ){
-            addCustomAlert("Invarlid outline server","The domain is not resolve to any ipv4")
+            addCustomAlert("Invalid outline server","The domain is not resolve to any ipv4")
             loading(false)
             return;
         }
