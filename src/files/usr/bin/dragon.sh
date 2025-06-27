@@ -174,7 +174,7 @@ fi
 
 if [ "$1" == "infinite-reach-connect" ];then
 
-    if [ -z "$2" ] || [ -z "$3" ] || [ -z "$4" ] || [ -z "$35" ] || [ -z "$6" ] || [ -z "$7" ] || [ -z "$8" ] || [ -z "$9" ]; then
+    if [ -z "$2" ] || [ -z "$3" ] || [ -z "$4" ] || [ -z "$5" ] || [ -z "$6" ] || [ -z "$7" ] || [ -z "$8" ] || [ -z "$9" ]; then
         response "Missing_Info"
         exit 1
     fi
