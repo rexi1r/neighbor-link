@@ -89,6 +89,21 @@ function parseUserStats(text){
     return result;
 }
 
+function parseOnlineStats(text){
+    const result = {};
+    if(!text) return result;
+    text.trim().split('\n').forEach(line=>{
+        const parts = line.trim().split(/\s+/);
+        if(parts.length >= 2){
+            const name = parts[0];
+            const count = parts[1];
+            const macs = parts.slice(2).join(' ');
+            result[name] = {count: count, macs: macs};
+        }
+    });
+    return result;
+}
+
 // const inputValues = {
 //     "captive": {
 //         ".anonymous": false,
@@ -118,6 +133,7 @@ function renderUserList() {
             <td>${index + 1}</td>
             <td>${user.username}</td>
             <td>${user.max ? user.max : 'No limit'}</td>
+            <td>${user.online ? user.online : '0'}${user.online_macs ? ' (' + user.online_macs + ')' : ''}</td>
             <td>${user.macs ? user.macs : 'Any'}</td>
             <td>${user.rx !== undefined ? parseInt(user.rx / (1024 * 1024)) + '/' + parseInt(user.tx / (1024 * 1024)) + ' MB' : '0/0 MB'}</td>
             <td>
@@ -220,10 +236,16 @@ async function reloadData() {
             fetch_users = Object.assign([], users);
             const statsOutput = await async_lua_call("dragon.sh","user-stats");
             const statsMap = parseUserStats(statsOutput);
+            const onlineOutput = await async_lua_call("dragon.sh","user-online");
+            const onlineMap = parseOnlineStats(onlineOutput);
             users.forEach(u => {
                 if(statsMap[u.username]){
                     u.rx = statsMap[u.username].rx;
                     u.tx = statsMap[u.username].tx;
+                }
+                if(onlineMap[u.username]){
+                    u.online = onlineMap[u.username].count;
+                    u.online_macs = onlineMap[u.username].macs;
                 }
             });
             renderUserList();
