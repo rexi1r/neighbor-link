@@ -26,7 +26,11 @@ case "$ARCH_RAW" in
         ARCH="mipsle"
         ;;
     mips)
-        ARCH="mips"
+        if grep -qi "little endian" /proc/cpuinfo; then
+            ARCH="mipsle"
+        else
+            ARCH="mips"
+        fi
         ;;
     *)
         logger -t pmaster "Unsupported architecture: $ARCH_RAW"
