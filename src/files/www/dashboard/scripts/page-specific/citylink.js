@@ -19,7 +19,7 @@ connectButton.onclick = async function(e){
         // connectButton.classList.add("btn-success")
     }
     else{
-        addCustomAlert("Somthing Went Wrong","Please try Agaign",6000)
+        addCustomAlert("Something Went Wrong","Please try Again",6000)
     }
     showLoadingConnectButton(false)
 }
@@ -33,7 +33,7 @@ disconnectButton.onclick = async function(e){
         loading(false);
         return;
     }
-    addCustomAlert("Something Went Wrong", "Please make sure your iran internet is working and try agaign",5000)
+    addCustomAlert("Something Went Wrong", "Please make sure your iran internet is working and try again",5000)
     loading(false);
     
 }
