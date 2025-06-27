@@ -356,6 +356,11 @@ if [ "$1" = "user-stats" ]; then
     response "$stats"
 fi
 
+if [ "$1" = "user-online" ]; then
+    online=$(sh /usr/bin/online_users.sh)
+    response "$online"
+fi
+
 if [ "$1" == "check-link" ];then
     result=$(sh /usr/bin/check_link.sh "$2" "$3")
     response "$result"
