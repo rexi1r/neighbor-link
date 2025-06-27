@@ -68,7 +68,6 @@ function isValidId(id) {
   return /^[a-fA-F0-9]{32}$/.test(id);
 }
 
-module.exports = { isValidId };
 
 /**
  * Check if a file exists.
