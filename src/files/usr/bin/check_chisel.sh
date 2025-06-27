@@ -7,6 +7,12 @@ if [ "$1" == "outline" ];then
     LOGFILE=/var/log/outline-gate.log
 fi
 
+# Exit early if the log file hasn't been created yet
+if [ ! -f "$LOGFILE" ]; then
+    echo "unknown"
+    exit 0
+fi
+
 # Filter log lines containing "Connect" (case-insensitive)
 last_status=""
 # Use a while loop to read each line from the grep output
