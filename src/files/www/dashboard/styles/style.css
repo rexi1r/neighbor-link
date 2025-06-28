@@ -63,3 +63,11 @@ body {
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+
+.text-success {
+  color: green;
+}
+
+.text-danger {
+  color: red;
+}
