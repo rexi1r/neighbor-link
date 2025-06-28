@@ -3,6 +3,11 @@ body {
 }
 
 
+#notif {
+    display: none;
+    justify-content: space-between;
+}
+
 #overlay {
     position: fixed;
     top: 0;
@@ -45,29 +50,3 @@ body {
   :dir(rtl) {
     font-family: 'Vazirmatn', sans-serif;
   }
-
-.spinner-border {
-    border: 4px solid rgba(0,0,0,0.1);
-    border-left-color: transparent;
-    border-radius: 50%;
-    width: 3rem;
-    height: 3rem;
-    animation: spin 0.75s linear infinite;
-}
-
-.spinner-border.text-light {
-    border-color: rgba(255,255,255,0.2);
-    border-left-color: #fff;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-.text-success {
-  color: green;
-}
-
-.text-danger {
-  color: red;
-}

@@ -13,14 +13,14 @@ function changeStatus(theStatus,SSID) {
     if(theStatus){
         textBox.textContent = "Status: Connected"
         ssidBox.textContent = SSID
-        connectionStatus.classList.remove("red","lighten-4");
-        connectionStatus.classList.add("green","lighten-4");
+        connectionStatus.classList.remove("alert-danger");
+        connectionStatus.classList.add("alert-success");
     }
     else{
         textBox.textContent = "Status: Disconnected"
         ssidBox.textContent = ""
-        connectionStatus.classList.remove("green","lighten-4");
-        connectionStatus.classList.add("red","lighten-4");
+        connectionStatus.classList.remove("alert-success");
+        connectionStatus.classList.add("alert-danger");
     }
     
 }

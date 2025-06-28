@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <title>Connection Logs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel='stylesheet' href='materialize/materialize.min.css'>
-    <script type='text/javascript' src='materialize/materialize.min.js' defer></script>
-        <link rel="stylesheet" href="styles/style.css">
-        <script type="text/javascript" src="scripts/common/loading.js" defer></script>
+    <link rel="stylesheet" href="styles/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <script type="text/javascript" src="scripts/common/bootstrap.bundle.min.js" defer></script>
+    <script type="text/javascript" src="scripts/common/loading.js" defer></script>
     <script type="text/javascript" src="scripts/common/ubus.js" defer></script>
     <script type="text/javascript" src="scripts/page-specific/logs.js" defer></script>
 </head>
 <body>
 <div class="container mt-3">
-    <a id="back-btn-href" class="btn-flat grey-text text-darken-2 mb-3" href="dashboard.html">Back to Dashboard</a>
+    <a id="back-btn-href" class="btn btn-outline-secondary mb-3" href="dashboard.html">Back to Dashboard</a>
     <div class="btn-group mb-3" role="group">
-        <button class="btn grey" data-type="starlink">Starlink</button>
-        <button class="btn grey" data-type="iran">Iran</button>
-        <button class="btn grey" data-type="vpn">VPN</button>
-        <button class="btn grey" data-type="citylink">CityLink</button>
+        <button class="btn btn-secondary" data-type="starlink">Starlink</button>
+        <button class="btn btn-secondary" data-type="iran">Iran</button>
+        <button class="btn btn-secondary" data-type="vpn">VPN</button>
+        <button class="btn btn-secondary" data-type="citylink">CityLink</button>
     </div>
     <h6 id="log-title" class="mb-2">Starlink Log</h6>
     <pre id="log-content" class="bg-body-secondary p-2" style="height:60vh; overflow:auto;"></pre>
