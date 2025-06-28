@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <title>Step 2</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel='stylesheet' href='materialize/materialize.min.css'>
-    <script type='text/javascript' src='materialize/materialize.min.js' defer></script>
+    <link rel="stylesheet" href="styles/bootstrap.min.css">
     <link rel="stylesheet" href="styles/style.css">
+    <script type="text/javascript" src="scripts/common/bootstrap.bundle.min.js" defer></script>
     <script type="text/javascript" src="scripts/common/loading.js" defer></script>
     <script type="text/javascript" src="scripts/common/ubus.js" defer></script>
     <script type="text/javascript" src="scripts/page-specific/ethernet.js" defer></script>
@@ -19,7 +19,7 @@
         <!-- Button container with border -->
         <div class="row button-container justify-content-between mt-3 align-items-center">
             <div class="col-auto">
-                <a id="back-btn-href" href="wifi.html" class="btn grey lighten-3 black-text">
+                <a id="back-btn-href" href="wifi.html" class="btn btn-light">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
@@ -32,8 +32,8 @@
                 <h6 class="mb-0">Step 2: Connect NeighborLink to Iran Internet</h6>
             </div>
             <div class="col-auto">
-                <a href="dashboard.html" class="btn-flat">Dashboard</a>
-                <a href="vpn.html" class="btn grey lighten-3 black-text">Next
+                <a href="dashboard.html" class="btn btn-link">Dashboard</a>
+                <a href="vpn.html" class="btn btn-light">Next
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-arrow-bar-right" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
@@ -47,7 +47,8 @@
         <div class="row justify-content-center mt-3">
 
             <!-- Note -->
-            <div class="card-panel blue lighten-4" role="alert">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 <div>
                     In this step, we connect NeighborLink to the Iranian internet. The goal is to ensure that you can access both domestic services and later, in the CityLink section, connect remotely to Starlink via the domestic internet.
                 </div>
@@ -58,7 +59,7 @@
             </div>
 
             <!-- How to  -->
-            <div class="row card-panel grey lighten-5" role="alert">
+            <div class="row alert alert-light" role="alert">
                 <div class="col-auto">
                     <strong>Instruction:</strong>
                     <ul>
@@ -79,7 +80,7 @@
 
         <div class="row container justify-content-start">
             <div class="col-6">
-                <button class="btn blue px-4 py-3" id="check-eth-btn">
+                <button class="btn btn-primary px-4 py-3" id="check-eth-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-ethernet" viewBox="0 0 16 16">
                         <path
@@ -90,7 +91,7 @@
                     Check Connection
                 </button>
             </div>
-            <div id="connection-status" class="col-6 card-panel red lighten-4 justify-content-center align-items-center">
+            <div id="connection-status" class="col-6 alert alert-danger justify-content-center align-items-center">
                 <div class="row">
                     <div class="col text-start">
                         <strong>Status: Disconnected</strong>
@@ -114,6 +115,10 @@
             </div>
         </div>
 
+        <div class="toast-container position-fixed  top-0 start-0 text-center" style="width: 100%;">
+            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000"
+                style="width: 100%">
+                <div class="alert alert-danger m-0" role="alert">You're not connected to router!</div>
             </div>
         </div>
 
