@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>Step 3</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/bootstrap.min.css">
+    <link rel='stylesheet' href='materialize/materialize.min.css'>
+    <script type='text/javascript' src='materialize/materialize.min.js' defer></script>
     <link rel="stylesheet" href="styles/style.css">
-    <script type="text/javascript" src="scripts/common/bootstrap.bundle.min.js" defer></script>
     <script type="text/javascript" src="scripts/common/loading.js" defer></script>
     <script type="text/javascript" src="scripts/common/ubus.js" defer></script>
     <script type="text/javascript" src="scripts/page-specific/vpn.js" defer></script>
@@ -17,7 +17,7 @@
         <!-- Button container with border -->
         <div class="row button-container justify-content-between mt-3 align-items-center">
             <div class="col-auto">
-                <a id="back-btn-href" href="ethernet.html" class="btn btn-light">
+                <a id="back-btn-href" href="ethernet.html" class="btn grey lighten-3 black-text">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5M10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5"/>
                     </svg>
@@ -28,8 +28,8 @@
                 <h6 class="mb-0">Step 3: VPN Connection</h6>
             </div>
             <div class="col-auto">
-                <a href="dashboard.html" class="btn btn-link">Dashboard</a>
-                <a href="guest.html" class="btn btn-light">Next 
+                <a href="dashboard.html" class="btn-flat">Dashboard</a>
+                <a href="guest.html" class="btn grey lighten-3 black-text">Next 
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8m-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5"/>
                 </svg>
@@ -41,8 +41,7 @@
         <div class="row justify-content-center mt-3">
             
             <!-- Note -->
-            <div class="alert alert-info alert-dismissible fade show mx-1" role="alert" >
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
+            <div class="card-panel blue lighten-4 mx-1" role="alert" >
                 <div>
                     In this step, we configure the VPN. Using a VPN is necessary to hide the IP address of your autonomous internet source (e.g., Starlink). In this step, Split Tunneling will also be automatically configured, which separates domestic and international IP traffic. Please be patient while following the instructions in this step!
                 </div>
@@ -53,7 +52,7 @@
             </div>
             
             <!-- How to  -->
-            <div class="row alert alert-light mx-1" role="alert">
+            <div class="row card-panel grey lighten-5 mx-1" role="alert">
                 <strong>Instruction:</strong>
                 <div class="col-auto">
                     <ul>
@@ -91,7 +90,7 @@
             </div>
             
             <div class="col-auto text-center" >
-                <button class="btn btn-outline-light px-4 py-3 mt-2" id="get-config">
+                <button class="btn btn-flat px-4 py-3 mt-2" id="get-config">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-arrow-down" viewBox="0 0 16 16">
                         <path d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
                         <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
@@ -104,7 +103,7 @@
 
         <div id="vpn-part" class="d-flex row container justify-content-center align-items-center py-3 ">
             <div class="row" style="max-width: 180px;">
-                <button class="btn btn-outline-danger px-2 py-1 my-3" id="change-config" >
+                <button class="btn btn-flat red-text px-2 py-1 my-3" id="change-config" >
                     Change Config
                 </button>
             </div>
@@ -155,9 +154,9 @@
         </div>
         <!-- Warning -->
         <div id="warning-part" class="row container justify-content-start mt-3">
-            <div class="alert alert-warning text-start d-none" id="english-alert" role="alert">
+            <div class="card-panel yellow lighten-4 text-start d-none" id="english-alert" role="alert">
                 <div class="position-absolute top-0 end-0" style="margin-top: 3px; margin-right: 3px;">
-                    <button id="fa-btn" class="btn btn-outline-light btn-sm" for="fa-btn">فارسی</button>
+                    <button id="fa-btn" class="btn btn-flat btn-sm" for="fa-btn">فارسی</button>
                 </div>
 
                 <h5 class="alert-heading mb-1 text-center">Warning!</h5>
@@ -171,9 +170,9 @@
                 </ol>
             </div>
 
-            <div dir="rtl" class="alert alert-warning text-end" id="farsi-alert" role="alert">
+            <div dir="rtl" class="card-panel yellow lighten-4 text-end" id="farsi-alert" role="alert">
                 <div class="position-absolute top-0 end-0" style="margin-top: 3px; margin-right: 3px;">
-                    <button id="en-btn" type="button" class="btn btn-outline-light btn-sm">English</button>
+                    <button id="en-btn" type="button" class="btn btn-flat btn-sm">English</button>
                 </div>
 
                 <h5 class="alert-heading mb-1 text-center">هشدار</h5>
@@ -201,9 +200,6 @@
         </div>
     </div> 
  
-    <div class="toast-container position-fixed  top-0 start-0 text-center" style="width: 100%;">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000" style="width: 100%">
-            <div class="alert alert-danger m-0" role="alert">You're not connected to router!</div>
         </div>
     </div>
 </body>

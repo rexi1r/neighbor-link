@@ -156,28 +156,7 @@ ConnectButton.onclick=function(){
 
 
 function addCustomAlert(title, message) {
-    const alertContainer = document.getElementById('alertContainer');
-
-    const alertDiv = document.createElement('div');
-    alertDiv.className = 'alert alert-warning alert-dismissible fade show';
-    alertDiv.role = 'alert';
-
-    const strongText = document.createElement('strong');
-    strongText.innerText = title;
-
-    const alertMessage = document.createTextNode(' ' + message);
-
-    const closeButton = document.createElement('button');
-    closeButton.type = 'button';
-    closeButton.className = 'btn-close';
-    closeButton.setAttribute('data-bs-dismiss', 'alert');
-    closeButton.setAttribute('aria-label', 'Close');
-
-    alertDiv.appendChild(strongText);
-    alertDiv.appendChild(alertMessage);
-    alertDiv.appendChild(closeButton);
-
-    alertContainer.appendChild(alertDiv);
+    M.toast({html: '<strong>' + title + '</strong> ' + message, classes: 'yellow darken-2'});
 }
 
 const connectionStatus =  document.getElementById("connection-status")
@@ -187,14 +166,14 @@ function changeStatus(theStatus,SSID) {
     if(theStatus){
         textBox.textContent = "Status: Connected"
         ssidBox.textContent = SSID
-        connectionStatus.classList.remove("alert-danger");
-        connectionStatus.classList.add("alert-success");
+        connectionStatus.classList.remove("red","lighten-4");
+        connectionStatus.classList.add("green","lighten-4");
     }
     else{
         textBox.textContent = "Status: Disconnected"
         ssidBox.textContent = ""
-        connectionStatus.classList.remove("alert-success");
-        connectionStatus.classList.add("alert-danger");
+        connectionStatus.classList.remove("green","lighten-4");
+        connectionStatus.classList.add("red","lighten-4");
     }
     
 }

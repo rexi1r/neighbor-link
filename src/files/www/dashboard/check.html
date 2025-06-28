@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <title>Link Check</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/bootstrap.min.css">
-    <link rel="stylesheet" href="styles/style.css">
-    <script type="text/javascript" src="scripts/common/bootstrap.bundle.min.js" defer></script>
-    <script type="text/javascript" src="scripts/common/loading.js" defer></script>
+    <link rel='stylesheet' href='materialize/materialize.min.css'>
+    <script type='text/javascript' src='materialize/materialize.min.js' defer></script>
+        <link rel="stylesheet" href="styles/style.css">
+        <script type="text/javascript" src="scripts/common/loading.js" defer></script>
     <script type="text/javascript" src="scripts/common/ubus.js" defer></script>
     <script type="text/javascript" src="scripts/page-specific/check.js" defer></script>
 </head>
 <body>
 <div class="container mt-3">
-    <a id="back-btn-href" class="btn btn-outline-secondary mb-3" href="dashboard.html">Back to Dashboard</a>
+    <a id="back-btn-href" class="btn-flat grey-text text-darken-2 mb-3" href="dashboard.html">Back to Dashboard</a>
 
     <div class="mb-3">
         <label class="form-label">Starlink Host/IP</label>
         <div class="input-group">
             <input type="text" class="form-control" id="starlink-host" placeholder="8.8.8.8">
-            <button class="btn btn-primary" id="starlink-check">Check</button>
+            <button class="btn blue" id="starlink-check">Check</button>
         </div>
         <div id="starlink-result" class="mt-1"></div>
     </div>
@@ -28,18 +28,18 @@
         <label class="form-label">Iran Host/IP</label>
         <div class="input-group">
             <input type="text" class="form-control" id="iran-host" placeholder="5.52.0.1">
-            <button class="btn btn-primary" id="iran-check">Check</button>
+            <button class="btn blue" id="iran-check">Check</button>
         </div>
         <div id="iran-result" class="mt-1"></div>
     </div>
 
     <div class="mb-3">
-        <button class="btn btn-secondary" id="vpn-check">Check VPN</button>
+        <button class="btn grey" id="vpn-check">Check VPN</button>
         <span id="vpn-result" class="ms-2"></span>
     </div>
 
     <div class="mb-3">
-        <button class="btn btn-secondary" id="city-check">Check CityLink</button>
+        <button class="btn grey" id="city-check">Check CityLink</button>
         <span id="city-result" class="ms-2"></span>
     </div>
 </div>

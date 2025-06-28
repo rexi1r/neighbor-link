@@ -149,28 +149,7 @@ async function wifiInfo(){
 }
 
 function addCustomAlert(title, message) {
-    const alertContainer = document.getElementById('alertContainer');
-
-    const alertDiv = document.createElement('div');
-    alertDiv.className = 'alert alert-warning alert-dismissible fade show';
-    alertDiv.role = 'alert';
-
-    const strongText = document.createElement('strong');
-    strongText.innerText = title;
-
-    const alertMessage = document.createTextNode(' ' + message);
-
-    const closeButton = document.createElement('button');
-    closeButton.type = 'button';
-    closeButton.className = 'btn-close';
-    closeButton.setAttribute('data-bs-dismiss', 'alert');
-    closeButton.setAttribute('aria-label', 'Close');
-
-    alertDiv.appendChild(strongText);
-    alertDiv.appendChild(alertMessage);
-    alertDiv.appendChild(closeButton);
-
-    alertContainer.appendChild(alertDiv);
+    M.toast({html: '<strong>' + title + '</strong> ' + message, classes: 'yellow darken-2'});
 }
 
 

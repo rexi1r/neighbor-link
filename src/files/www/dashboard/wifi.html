@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>Step 1</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/bootstrap.min.css">
+    <link rel='stylesheet' href='materialize/materialize.min.css'>
+    <script type='text/javascript' src='materialize/materialize.min.js' defer></script>
     <link rel="stylesheet" href="styles/style.css">
-    <script type="text/javascript" src="scripts/common/bootstrap.bundle.min.js" defer></script>
     <script type="text/javascript" src="scripts/common/loading.js" defer></script>
     <script type="text/javascript" src="scripts/common/ubus.js" defer></script>
     <script type="text/javascript" src="scripts/page-specific/wifi.js" defer></script>
@@ -17,7 +17,7 @@
         <!-- Button container with border -->
         <div class="row button-container justify-content-between mt-3 align-items-center">
             <div class="col-auto">
-                <a id="back-btn-href" href="index.html" class="btn btn-light">
+                <a id="back-btn-href" href="index.html" class="btn grey lighten-3 black-text">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5M10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5"/>
                     </svg>
@@ -28,8 +28,8 @@
                 <h6 class="mb-0">Step 1:<br> Connect NeighborLink to Global Internet</h6>
             </div>
             <div class="col-auto">
-                <a href="dashboard.html" class="btn btn-link">Dashboard</a>
-                <a href="ethernet.html" class="btn btn-light">Next 
+                <a href="dashboard.html" class="btn-flat">Dashboard</a>
+                <a href="ethernet.html" class="btn grey lighten-3 black-text">Next 
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8m-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5"/>
                 </svg>
@@ -41,8 +41,7 @@
         <div class="row justify-content-center mt-3">
             
             <!-- Note -->
-            <div class="alert alert-info alert-dismissible fade show mx-1" role="alert" >
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
+            <div class="card-panel blue lighten-4 mx-1" role="alert" >
                 <div>
                     We recommend using an Ethernet cable to connect to the NeighborLink Router for the setup process. If you use Wi-Fi, you may need to reconnect multiple times, increasing the likelihood of errors during the setup process.
                 </div>
@@ -53,7 +52,7 @@
             </div>
             
             <!-- How to  -->
-            <div class="row alert alert-light mx-1" role="alert">
+            <div class="row card-panel grey lighten-5 mx-1" role="alert">
                 <strong>Instruction:</strong>
                 <div class="col-auto">
                     <ul>
@@ -75,7 +74,7 @@
 
         <div class="row container justify-content-center align-items-center mb-3">
             <div id="elements-parent-container" class="col-12 col-lg-6  col-md-6 border border-secoundry py-3 px-4">
-                <div id="connection-status" class="row alert alert-danger justify-content-center align-items-center">
+                <div id="connection-status" class="row card-panel red lighten-4 justify-content-center align-items-center">
                     <div class="col text-start">
                         <strong>Status: Disconnected</strong>
                     </div>
@@ -85,7 +84,7 @@
                 </div>
                 <div class="row button-container justify-content-center align-items-center">
                     
-                    <button class="btn btn-success internet-source-global-wifi w-75 px-4 py-3" id="scan-wifi-btn">
+                    <button class="btn green internet-source-global-wifi w-75 px-4 py-3" id="scan-wifi-btn">
                         <svg viewBox="0 0 1024 1024" class="dashboard-icon17" width="24" fill="#fff">
                             <path d="M214 554q124-122 299-122t297 122l-84 86q-36-36-99-62t-115-26-115 26-99 62zM384 726q54-54 128-54t128 54l-128 128zM42 384q196-194 471-194t469 194l-86 86q-160-158-384-158t-384 158z"></path>
                         </svg>
@@ -144,10 +143,10 @@
             </div>
             <div class="row d-flex justify-content-center mt-4">
                 <div class="col text-center">
-                    <button type="button" class="btn btn-outline-light " id="cancel">Cancel</button>
+                    <button type="button" class="btn btn-flat " id="cancel">Cancel</button>
                 </div>
                 <div class="col text-center">
-                    <button type="button" class="btn btn-success " id="connect">Connect</button>
+                    <button type="button" class="btn green " id="connect">Connect</button>
                 </div>
                 
             </div>
@@ -166,9 +165,6 @@
         </div>
     </div> 
  
-    <div class="toast-container position-fixed  top-0 start-0 text-center" style="width: 100%;">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000" style="width: 100%">
-            <div class="alert alert-danger m-0" role="alert">You're not connected to router!</div>
         </div>
     </div>
 

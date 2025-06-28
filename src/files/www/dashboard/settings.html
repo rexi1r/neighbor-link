@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <title>Step 4</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/bootstrap.min.css">
+    <link rel='stylesheet' href='materialize/materialize.min.css'>
+    <script type='text/javascript' src='materialize/materialize.min.js' defer></script>
     <link rel="stylesheet" href="styles/style.css">
-    <script type="text/javascript" src="scripts/common/bootstrap.bundle.min.js" defer></script>
     <script type="text/javascript" src="scripts/common/loading.js" defer></script>
     <script type="text/javascript" src="scripts/common/ubus.js" defer></script>
     <script type="text/javascript" src="scripts/page-specific/settings.js" defer></script>
@@ -19,7 +19,7 @@
         <!-- Button container with border -->
         <div class="row button-container justify-content-between mt-3 align-items-center">
             <div class="col-auto">
-                <a id="back-btn-href" href="dashboard.html" class="btn btn-light">
+                <a id="back-btn-href" href="dashboard.html" class="btn grey lighten-3 black-text">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
@@ -32,7 +32,7 @@
                 <h6 class="mb-0">Device Settings</h6>
             </div>
             <div class="col-auto">
-                <a href="dashboard.html" class="btn btn-link">Dashboard</a>
+                <a href="dashboard.html" class="btn-flat">Dashboard</a>
                 </a>
             </div>
         </div>
@@ -56,11 +56,11 @@
                     <div class="form-text">Chose secure password</div>
                 </div>
                 <div class="d-flex col-auto text-center justify-content-center pb-4 pt-1">
-                    <button type="button" class="btn btn-success mt-4" id="wifi-update">Update</button>
+                    <button type="button" class="btn green mt-4" id="wifi-update">Update</button>
                 </div>
             </div>
             <div class="row">
-                <a name="Advance Settings" id="" class="btn btn-link" href="../../cgi-bin/luci/" role="button">Advance
+                <a name="Advance Settings" id="" class="btn-flat" href="../../cgi-bin/luci/" role="button">Advance
                     Settings</a>
             </div>
 
@@ -79,10 +79,6 @@
         </div>
     </div>
 
-    <div class="toast-container position-fixed  top-0 start-0 text-center" style="width: 100%;">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000"
-            style="width: 100%">
-            <div class="alert alert-danger m-0" role="alert">You're not connected to router!</div>
         </div>
     </div>
 </body>

@@ -62,24 +62,24 @@ function changeStatus(status, underText) {
     if(status === "connected"){
         textBox.textContent = "Status: Connected"
         ssidBox.textContent = underText
-        connectionStatus.classList.remove("alert-danger","alert-warning")
-        connectionStatus.classList.add("alert-success")
+        connectionStatus.classList.remove("red","lighten-4","yellow","lighten-4")
+        connectionStatus.classList.add("green","lighten-4")
         disconnectButton.classList.remove("d-none")
         document.getElementById("config-cards").classList.remove("d-none")
         document.getElementById("connection-section").classList.add("d-none")
     } else if(status === "connecting"){
         textBox.textContent = "Status: Connecting..."
         ssidBox.textContent = underText || ""
-        connectionStatus.classList.remove("alert-danger","alert-success")
-        connectionStatus.classList.add("alert-warning")
+        connectionStatus.classList.remove("red","lighten-4","green","lighten-4")
+        connectionStatus.classList.add("yellow","lighten-4")
         disconnectButton.classList.add("d-none")
         document.getElementById("config-cards").classList.add("d-none")
         document.getElementById("connection-section").classList.add("d-none")
     } else {
         textBox.textContent = "Status: Disconnected"
         ssidBox.textContent = ""
-        connectionStatus.classList.remove("alert-success","alert-warning")
-        connectionStatus.classList.add("alert-danger")
+        connectionStatus.classList.remove("green","lighten-4","yellow","lighten-4")
+        connectionStatus.classList.add("red","lighten-4")
         disconnectButton.classList.add("d-none")
         document.getElementById("config-cards").classList.add("d-none")
         document.getElementById("connection-section").classList.remove("d-none")
