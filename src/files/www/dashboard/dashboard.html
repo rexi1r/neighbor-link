@@ -6,10 +6,8 @@
     <title>Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="materialize/materialize.min.css">
-    <link rel="stylesheet" href="styles/bootstrap.min.css">
-    <link rel="stylesheet" href="styles/style.css">
-    <script type="text/javascript" src="scripts/common/bootstrap.bundle.min.js" defer></script>
-    <script type="text/javascript" src="materialize/materialize.min.js" defer></script>
+        <link rel="stylesheet" href="styles/style.css">
+        <script type="text/javascript" src="materialize/materialize.min.js" defer></script>
     <script type="text/javascript" src="scripts/common/loading.js" defer></script>
     <script type="text/javascript" src="scripts/common/ubus.js" defer></script>
     <script type="text/javascript" src="scripts/page-specific/dashboard.js" defer></script>
@@ -20,7 +18,7 @@
     <div class="container row align-items-center justify-content-center text-center min-vh-100 px-1">
         <div class="col-auto mx-3">
             <div class="row mt-3">
-                <button id="starlink-btn" type="button" class="btn btn-success text-start">
+                <button id="starlink-btn" type="button" class="btn green text-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-wifi" viewBox="0 0 16 16">
                         <path
@@ -33,7 +31,7 @@
                 </button>
             </div>
             <div class="row mt-3">
-                <button id="iran-btn" type="button" class="btn btn-success text-start">
+                <button id="iran-btn" type="button" class="btn green text-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-ethernet" viewBox="0 0 16 16">
                         <path
@@ -46,7 +44,7 @@
                 </button>
             </div>
             <div class="row mt-3">
-                <button id="settings-btn" type="button" class="btn btn-info text-start">
+                <button id="settings-btn" type="button" class="btn blue text-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-gear-fill" viewBox="0 0 16 16">
                         <path
@@ -57,7 +55,7 @@
                 </button>
             </div>
             <div class="row mt-3">
-                <button id="vpn-btn" type="button" class="btn btn-success text-start">
+                <button id="vpn-btn" type="button" class="btn green text-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-gear-fill" viewBox="0 0 16 16">
                         <path
@@ -68,7 +66,7 @@
                 </button>
             </div>
             <div class="row mt-3">
-                <button id="guest-btn" type="button" class="btn btn-success text-start">
+                <button id="guest-btn" type="button" class="btn green text-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-people-fill" viewBox="0 0 16 16">
                         <path
@@ -79,7 +77,7 @@
                 </button>
             </div>
             <div class="row mt-3">
-                <button id="reach-btn" type="button" class="btn btn-success text-start">
+                <button id="reach-btn" type="button" class="btn green text-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-hdd-network-fill" viewBox="0 0 16 16">
                         <path
@@ -91,7 +89,7 @@
                 </button>
             </div>
             <div class="row mt-3">
-                <button id="firmware-btn" type="button" class="btn btn-secondary text-start">
+                <button id="firmware-btn" type="button" class="btn grey text-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-arrow-repeat" viewBox="0 0 16 16">
                         <path
@@ -104,7 +102,7 @@
                 </button>
             </div>
             <div class="row mt-3">
-                <button id="logs-btn" type="button" class="btn btn-secondary text-start">
+                <button id="logs-btn" type="button" class="btn grey text-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M2.5 12.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10a.5.5 0 0 1-.5-.5z"/>
                     </svg>
@@ -113,7 +111,7 @@
                 </button>
             </div>
             <div class="row mt-3">
-                <button id="check-btn" type="button" class="btn btn-secondary text-start">
+                <button id="check-btn" type="button" class="btn grey text-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-activity" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M0 8a.5.5 0 0 1 .5-.5h2.707l2-4A.5.5 0 0 1 5.5 3h.001a.5.5 0 0 1 .462.308L8.147 8.5H11.5a.5.5 0 0 1 .45.725l-2 4a.5.5 0 0 1-.9-.005L7.186 9.5H3.854l-1.5 3A.5.5 0 0 1 1.9 13H.5a.5.5 0 0 1-.5-.5V8z"/>
                     </svg>
@@ -166,9 +164,9 @@
 
                 <!-- Warning -->
                 <div id="warning-part" class="row container justify-content-start mt-3">
-                    <div class="alert alert-warning text-start d-none" id="english-alert" role="alert">
+                    <div class="card-panel yellow lighten-4 text-start d-none" id="english-alert" role="alert">
                         <div class="position-absolute top-0 end-0" style="margin-top: 3px; margin-right: 3px;">
-                            <button id="fa-btn" class="btn btn-outline-light btn-sm" for="fa-btn">فارسی</button>
+                            <button id="fa-btn" class="btn btn-flat btn-sm" for="fa-btn">فارسی</button>
                         </div>
 
                         <h5 class="alert-heading mb-1 text-center">Warning!</h5>
@@ -182,9 +180,9 @@
                         </ol>
                     </div>
 
-                    <div dir="rtl" class="alert alert-warning text-end" id="farsi-alert" role="alert">
+                    <div dir="rtl" class="card-panel yellow lighten-4 text-end" id="farsi-alert" role="alert">
                         <div class="position-absolute top-0 end-0" style="margin-top: 3px; margin-right: 3px;">
-                            <button id="en-btn" type="button" class="btn btn-outline-light btn-sm">English</button>
+                            <button id="en-btn" type="button" class="btn btn-flat btn-sm">English</button>
                         </div>
 
                         <h5 class="alert-heading mb-1 text-center">هشدار</h5>
@@ -218,10 +216,6 @@
         </div>
     </div>
 
-    <div class="toast-container position-fixed  top-0 start-0 text-center" style="width: 100%;">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000"
-            style="width: 100%">
-            <div class="alert alert-danger m-0" role="alert">You're not connected to router!</div>
         </div>
     </div>
 </body>

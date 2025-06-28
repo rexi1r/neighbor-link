@@ -1,5 +1,3 @@
-const toastLiveExample = document.getElementById('liveToast')
-const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
 var toastShowCount = 0;
 var isSet=false
 const buildVersionLabel = document.getElementById('build-version')
@@ -7,7 +5,7 @@ function heartBeat() {
     const Device_ID=["uci", "get", {"config":"routro"}];
     ubus_call(Device_ID,function(chunk){
         if(chunk[0] !== 0) {
-            toastBootstrap.show()
+            M.toast({html: "You're not connected to router!", classes: 'red'});
             toastShowCount++
         } 
         else if(chunk[1]?.values?.firmware?.version){

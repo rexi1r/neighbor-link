@@ -171,14 +171,14 @@ function deleteUser(btn) {
         renderUserList();
     }
     SaveIN();
-    myModal.hide();
+    myModal.close();
 }
 
-const myModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+const myModal = M.Modal.init(document.getElementById('confirmModal'));
 function deleteUserModal(username) {
     document.getElementById('modal-username').innerText = username;
     document.getElementById('modal-delete-btn').setAttribute('data-username', username);
-    myModal.show();
+    myModal.open();
 }
 
 // Function to add a user
