@@ -8,6 +8,8 @@ START=90
 STOP=90
 LOGFILE="/var/log/chisel.log"
 PROCESS_LOG="/var/log/chisel_process.log"
+CHISEL_BIN="/usr/bin/chisel"
+[ -x "$CHISEL_BIN" ] || CHISEL_BIN="/tmp/chisel"
 
 init_process_log() {
     [ -f "$PROCESS_LOG" ] || { touch "$PROCESS_LOG" && chmod 600 "$PROCESS_LOG"; }
@@ -52,7 +54,7 @@ start_service() {
     procd_open_instance
 
     # Redirect output to a log file using /bin/sh -c
-    procd_set_param command /bin/sh -c "/tmp/chisel client --auth $key:$password ${host}:${port} R:0.0.0.0:$proxyport:127.0.0.1:8888 >> $LOGFILE 2>&1"
+    procd_set_param command /bin/sh -c "$CHISEL_BIN client --auth $key:$password ${host}:${port} R:0.0.0.0:$proxyport:127.0.0.1:8888 >> $LOGFILE 2>&1"
     
     # Enable respawn if needed
     procd_set_param respawn
