@@ -28,6 +28,9 @@ The `src/build.bash` script fetches the OpenWrt SDK and now also compiles the
 [Chisel](https://github.com/jpillora/chisel) tunnel. After extracting the image
 builder, run:
 
+> **Note**: Building the firmware requires **Go 1.20** or newer. Older Go
+releases may fail when cross‑compiling Chisel.
+
 ```
 GOOS=linux GOARCH=mipsle GOMIPS=softfloat go install -ldflags="-s -w" github.com/jpillora/chisel@latest
 cp $(go env GOPATH)/bin/linux_mipsle/chisel src/files/usr/bin/chisel
