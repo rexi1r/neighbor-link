@@ -29,7 +29,8 @@ The `src/build.bash` script fetches the OpenWrt SDK and now also compiles the
 builder, run:
 
 ```
-GOOS=linux GOARCH=mipsle GOMIPS=softfloat go build -ldflags="-s -w" -o ../files/usr/bin/chisel github.com/jpillora/chisel
+GOOS=linux GOARCH=mipsle GOMIPS=softfloat go install -ldflags="-s -w" github.com/jpillora/chisel@latest
+cp $(go env GOPATH)/bin/linux_mipsle/chisel src/files/usr/bin/chisel
 ```
 
 The compiled binary is stored in `src/files/usr/bin/chisel` and will be
