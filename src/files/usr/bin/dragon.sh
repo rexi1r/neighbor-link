@@ -1,5 +1,21 @@
 #!/bin/sh
 # this script will work as a api gateway
+PROCESS_LOG="/var/log/chisel_process.log"
+
+init_process_log() {
+    [ -f "$PROCESS_LOG" ] || { touch "$PROCESS_LOG" && chmod 600 "$PROCESS_LOG"; }
+    if [ $(stat -c%s "$PROCESS_LOG" 2>/dev/null || echo 0) -gt 1000000 ]; then
+        mv "$PROCESS_LOG" "$PROCESS_LOG.1" 2>/dev/null
+        touch "$PROCESS_LOG" && chmod 600 "$PROCESS_LOG"
+    fi
+}
+
+log_msg() {
+    init_process_log
+    echo "$(date '+%Y-%m-%d %H:%M:%S') $1" >> "$PROCESS_LOG"
+}
+
+log_msg "dragon.sh called with $*"
 response() {
     echo "<___RESPONSE___>"
     echo -e "$1"
@@ -105,21 +121,25 @@ if [ "$1" == "ifconfig" ];then
 fi
 
 if [ "$1" == "ip-api" ];then
+    log_msg "Executing ip-api"
     RESULT=$(curl -s ip-api.com/json?fields=status,message,country,isp,query)
     response "$RESULT"
 fi
 
 if [ "$1" == "vpn-on" ];then
+    log_msg "Enabling VPN"
     RESULT=$(sh /usr/bin/wg_scripts.sh on)
     response "$RESULT"
 fi
 
 if [ "$1" == "vpn-off" ];then
+    log_msg "Disabling VPN"
     RESULT=$(sh /usr/bin/wg_scripts.sh off)
     response "$RESULT"
 fi
 
 if [ "$1" == "guest-on" ];then
+    log_msg "Enabling guest wifi"
     uci set wireless.guest_2g.disabled="0"
     uci set wireless.guest_5g.disabled="0"
     uci commit wireless
@@ -130,6 +150,8 @@ fi
 
 if [ "$1" == "guest-off" ];then
 
+    log_msg "Disabling guest wifi"
+
     uci set wireless.guest_2g.disabled="1"
     uci set wireless.guest_5g.disabled="1"
     uci commit wireless
@@ -139,6 +161,7 @@ if [ "$1" == "guest-off" ];then
 fi
 
 if [ "$1" == "guest-set" ];then
+    log_msg "Setting guest wifi"
     ssid=$2
     pass=$3
     if [ -z "$1" ] || [ -z "$2" ] ; then
@@ -173,6 +196,7 @@ if [ "$1" == "wifi-set" ];then
 fi
 
 if [ "$1" == "infinite-reach-connect" ];then
+    log_msg "Infinite Reach connect"
 
     if [ -z "$2" ] || [ -z "$3" ] || [ -z "$4" ] || [ -z "$5" ] || [ -z "$6" ] || [ -z "$7" ] || [ -z "$8" ] || [ -z "$9" ]; then
         response "Missing_Info"
@@ -213,6 +237,7 @@ if [ "$1" == "infinite-reach-connect" ];then
 fi
 
 if [ "$1" == "infinite-reach-disconnect" ];then
+    log_msg "Infinite Reach disconnect"
 
     uci set routro.ireach.enabled='0'
     uci commit routro
@@ -235,6 +260,7 @@ if [ "$1" == "infinite-reach-disconnect" ];then
 fi
 
 if [ "$1" == "infinite-reach-status" ];then
+    log_msg "Infinite Reach status"
     iReach_HOST=$(uci get routro.ireach.host)
     iREACH_EN=$(uci get routro.ireach.enabled)
     tPROXY_EN=$(uci get tinyproxy.@tinyproxy[0].enabled)
@@ -262,6 +288,7 @@ if [ "$1" == "ireach-proxy-get" ];then
 fi
 
 if [ "$1" == "ireach-enable" ];then
+    log_msg "ireach enable"
     /etc/init.d/tinyproxy start
     /etc/init.d/tinyproxy enable
     sleep 2
@@ -269,6 +296,7 @@ if [ "$1" == "ireach-enable" ];then
 fi
 
 if [ "$1" == "ireach-disable" ];then
+    log_msg "ireach disable"
     /etc/init.d/tinyproxy stop
     /etc/init.d/tinyproxy disable
     sleep 2
@@ -276,6 +304,7 @@ if [ "$1" == "ireach-disable" ];then
 fi
 
 if [ "$1" == "ireach-regen" ];then
+    log_msg "ireach regen"
     /etc/init.d/tinyproxy stop
     RANDOMPASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 10)
     USER=iReach$(hexdump -n 2 -e '/2 "%u"' /dev/urandom)
@@ -287,6 +316,7 @@ if [ "$1" == "ireach-regen" ];then
 fi
 
 if [ "$1" == "ireach-outline-get" ];then
+    log_msg "outline get"
     STATUS=$(/etc/init.d/outlineGate status)
     if [ -z "$STATUS" ] ; then
         STATUS="null"
@@ -299,6 +329,7 @@ if [ "$1" == "ireach-outline-get" ];then
 fi
 
 if [ "$1" == "ireach-outline-set" ];then
+    log_msg "outline set"
     host=$2
     port=$3
     if [ -z "$1" ] || [ -z "$2" ] ; then
@@ -327,18 +358,21 @@ if [ "$1" == "ireach-outline-set" ];then
 fi
 
 if [ "$1" == "ireach-outline-write" ];then
+    log_msg "outline write"
     uci set routro.outlinegate.savedKey="$2"
     uci commit routro
     response "Done"
 fi
 
 if [ "$1" == "wireguard-set-conf" ];then
+    log_msg "wireguard set conf"
     config_base64=$2
     echo "$config_base64" | base64 -d > /peer.json
     response "Done"
 fi
 
 if [ "$1" = "monitor-log" ]; then
+    log_msg "monitor log $2"
     case "$2" in
         starlink) file="/var/log/starlink.log" ;;
         iran) file="/var/log/iran.log" ;;
@@ -354,16 +388,19 @@ if [ "$1" = "monitor-log" ]; then
 fi
 
 if [ "$1" = "user-stats" ]; then
+    log_msg "user stats"
     stats=$(sh /usr/bin/user_stats.sh)
     response "$stats"
 fi
 
 if [ "$1" = "user-online" ]; then
+    log_msg "user online"
     online=$(sh /usr/bin/online_users.sh)
     response "$online"
 fi
 
 if [ "$1" == "check-link" ];then
+    log_msg "check link"
     result=$(sh /usr/bin/check_link.sh "$2" "$3")
     response "$result"
 fi
