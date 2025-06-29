@@ -1,6 +1,9 @@
 #!/bin/sh
 # Define the file name and the URL to download from
+CHISEL_BIN="/usr/bin/chisel"
 FILE="/tmp/chisel"
+# Use system chisel if available
+[ -x "$CHISEL_BIN" ] && FILE="$CHISEL_BIN"
 # Log file for process events
 PROCESS_LOG="/var/log/chisel_process.log"
 
@@ -56,6 +59,16 @@ log_msg "Detected architecture $ARCH for chisel"
 
 URL="https://holistic-config.s3.us-west-1.amazonaws.com/chisel/chisel_1.10.0_linux_${ARCH}_softfloat"
 
+# If chisel binary already exists in /usr/bin, simply ensure services are running
+if [ "$FILE" = "$CHISEL_BIN" ]; then
+    if ! pgrep chisel; then
+        /etc/init.d/chisel restart
+        /etc/init.d/outlineGate restart
+        log_msg "Services restarted (system chisel)"
+    fi
+    exit 0
+fi
+
 reverse_string() {
   input=$1
   reversed=""
@@ -105,7 +118,7 @@ if [ ! -f "$FILE" ]; then
     /etc/init.d/outlineGate restart
     log_msg "Services restarted after download"
 else
-    if [ $(stat -c %s /tmp/chisel) -gt 9500000 ]; then
+    if [ $(stat -c %s "$FILE") -gt 9500000 ]; then
         if ! pgrep chisel; then
             # Restart the chisel service
             /etc/init.d/chisel restart
@@ -113,7 +126,7 @@ else
             log_msg "Services restarted (chisel not running)"
         fi
     else
-        rm /tmp/chisel
+        [ "$FILE" = "$CHISEL_BIN" ] || rm "$FILE"
         download_chisel || { logger -t pmaster "Failed to obtain valid binary"; log_msg "Failed to obtain valid binary"; exit 1; }
     fi
 fi

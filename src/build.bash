@@ -59,6 +59,9 @@ for profile in $profiles; do
   curl -fsSL "$download_url" -O
   tar -J -x -f openwrt-imagebuilder-"$PATH_PART".Linux-x86_64.tar.xz 2>/dev/null > /dev/null
 
+  # Build chisel for routers
+  GOOS=linux GOARCH=mipsle GOMIPS=softfloat go build -ldflags="-s -w" -o ../files/usr/bin/chisel github.com/jpillora/chisel
+
   sed -i "s/option version .*/option version '$release_version'/" "files/etc/config/routro"
   sed -i "s/option profile .*/option profile '$profile'/" "files/etc/config/routro"
   

@@ -23,6 +23,20 @@ The CityLink solution was designed with an understanding of, and in response to,
 
 The solution includes integrating a cloud server, empowering users to create personal servers, and implementing firewalls to conceal satellite connections. An assessment of Iranian internet providers favored fiber internet and point-to-point connections for their performance and security.
 
+## Building Firmware with Chisel
+The `src/build.bash` script fetches the OpenWrt SDK and now also compiles the
+[Chisel](https://github.com/jpillora/chisel) tunnel. After extracting the image
+builder, run:
+
+```
+GOOS=linux GOARCH=mipsle GOMIPS=softfloat go build -ldflags="-s -w" -o ../files/usr/bin/chisel github.com/jpillora/chisel
+```
+
+The compiled binary is stored in `src/files/usr/bin/chisel` and will be
+included in the generated firmware images. When this binary exists on the
+router, the init scripts use it directly and skip downloading Chisel at run
+time.
+
 ## User Management Enhancements
 Users can limit the number of devices per account using the **Max Devices** field and optionally set a comma separated list of permitted MAC addresses. A helper script `user_stats.sh` prints traffic usage per user based on firewall counters. Stale MAC entries are purged whenever a login occurs so the limit only counts active devices.
 The management page table now lists these values beside each username so administrators can quickly review configured limits.
