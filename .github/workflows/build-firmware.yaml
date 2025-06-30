@@ -37,6 +37,19 @@ jobs:
         with:
           go-version: '1.21'
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Node dependencies
+        working-directory: config-generator
+        run: npm ci
+
+      - name: Run config-generator tests
+        working-directory: config-generator
+        run: npm test
+
       - name: Build the Firmware
         if: github.event_name != 'release'
         run: |
