@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Check if the script is running as root or with sudo
 if [[ ! $(id -u) -eq 0 && ! $(id -g) -eq 0 ]]; then
@@ -150,7 +151,7 @@ deploy_service() {
     CLIENT_KEY=$(openssl rand -hex 12)
     
     echo "Please enter the domain associated with this server. This is an optional step, but it is required if you plan to use the Proxy service."
-    read DOMAIN
+    read -r DOMAIN
 
     validate_client_key
 
@@ -159,19 +160,16 @@ deploy_service() {
         # Install required packages
         apt update
         apt install jq openssl -y
-        check_domain_existence 
-
-        if [[ $? -eq 0 ]]; then
+        if check_domain_existence; then
             apt install squid snapd nginx jq curl apache2-utils -y
             snap install certbot --classic
-        fi 
+        fi
 
         # Download and configure chisel
-        wget https://github.com/jpillora/chisel/releases/download/v${DEFAULT_CHISEL_VERSION}/chisel_${DEFAULT_CHISEL_VERSION}_linux_amd64.gz
-        if [[ $? -ne 0 ]]; then
-            echo "Error in downloadin the service from github, If github blocked in your country please use proxy"
-            exit 1;
-        fi 
+        if ! wget "https://github.com/jpillora/chisel/releases/download/v${DEFAULT_CHISEL_VERSION}/chisel_${DEFAULT_CHISEL_VERSION}_linux_amd64.gz"; then
+            echo "Error downloading the service from GitHub. If GitHub is blocked in your country please use a proxy"
+            exit 1
+        fi
         gunzip chisel_${DEFAULT_CHISEL_VERSION}_linux_amd64.gz
         sudo mkdir -p /etc/chisel/clients
         mv chisel_${DEFAULT_CHISEL_VERSION}_linux_amd64 /etc/chisel/chisel_v${DEFAULT_CHISEL_VERSION}
@@ -245,7 +243,10 @@ deploy_service() {
 
             # Todo : Setup Squid with split tunneling and parent proxy
             echo ".ir" > /etc/squid/domains.txt
-            wget https://github.com/bootmortis/iran-hosted-domains/releases/download/202409020032/domains.txt
+            if ! wget "https://github.com/bootmortis/iran-hosted-domains/releases/download/202409020032/domains.txt"; then
+                echo "Failed to download domain list" >&2
+                exit 1
+            fi
             grep -v "\.ir$" domains.txt > domains.txt.2
             sed 's/^././' domains.txt.2 >> /etc/squid/domains.txt
 
@@ -352,7 +353,7 @@ while true; do
     echo "3. Stop and delete the service"
     echo "4. List available services"
     echo "5. Exit"
-    read CHOICE
+    read -r CHOICE
 
     case "$CHOICE" in
         1) deploy_service ;;

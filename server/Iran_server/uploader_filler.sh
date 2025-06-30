@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # This helper script attempts to keep upstream and downstream bandwidth usage
 # closer together by sending dummy data when inbound traffic greatly exceeds

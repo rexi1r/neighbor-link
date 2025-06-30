@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Network interface to monitor. Can be overridden by setting the NL_INTERFACE
 # environment variable before running this script.
