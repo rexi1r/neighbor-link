@@ -7,27 +7,27 @@ USE_PROCD=1
 START=96
 STOP=96
 LOGFILE="/var/log/outline-gate.log"
-PROCESS_LOG="/var/log/chisel_process.log"
+# PROCESS_LOG="/var/log/chisel_process.log"
 CHISEL_BIN="/usr/bin/chisel"
 [ -x "$CHISEL_BIN" ] || CHISEL_BIN="/tmp/chisel"
 
-init_process_log() {
-    [ -f "$PROCESS_LOG" ] || { touch "$PROCESS_LOG" && chmod 600 "$PROCESS_LOG"; }
-    if [ $(stat -c%s "$PROCESS_LOG" 2>/dev/null || echo 0) -gt 1000000 ]; then
-        mv "$PROCESS_LOG" "$PROCESS_LOG.1" 2>/dev/null
-        touch "$PROCESS_LOG" && chmod 600 "$PROCESS_LOG"
-    fi
-}
+#init_process_log() {
+#    [ -f "$PROCESS_LOG" ] || { touch "$PROCESS_LOG" && chmod 600 "$PROCESS_LOG"; }
+#    if [ $(stat -c%s "$PROCESS_LOG" 2>/dev/null || echo 0) -gt 1000000 ]; then
+#        mv "$PROCESS_LOG" "$PROCESS_LOG.1" 2>/dev/null
+#        touch "$PROCESS_LOG" && chmod 600 "$PROCESS_LOG"
+#    fi
+#}
 
-log_msg() {
-    init_process_log
-    echo "$(date '+%Y-%m-%d %H:%M:%S') $1" >> "$PROCESS_LOG"
-}
+#log_msg() {
+#    init_process_log
+#    echo "$(date '+%Y-%m-%d %H:%M:%S') $1" >> "$PROCESS_LOG"
+#}
 
 
 start_service() {
 
-        log_msg "Starting outlineGate service"
+        # log_msg "Starting outlineGate service"
         key=$(uci get routro.ireach.user)
         port=$(uci get routro.ireach.port)
         host=$(uci get routro.ireach.host)
@@ -42,7 +42,7 @@ start_service() {
         if [ -z "$key" ] || [ -z "$port" ] || [ -z "$host" ] || [ -z "$password" ]  || [ -z "$mport" ] || [ -z "$oport" ] || [ -z "$ohost" ];then
                 echo "outlineGate_status=MISSINF_CONFIG" > /tmp/outlineGate_status
                 echo "Connect - service is not ready" >> $LOGFILE
-                log_msg "Missing configuration, aborting start"
+                # log_msg "Missing configuration, aborting start"
                 exit 0;
         fi
 
@@ -55,12 +55,12 @@ start_service() {
         procd_set_param stdout 1
         procd_set_param stderr 1
         procd_close_instance
-        log_msg "outlineGate service started"
+        # log_msg "outlineGate service started"
 }
 
 stop() {
 
         echo "Connect - Stopping outlinegate service" >> $LOGFILE
-        log_msg "Stopping outlineGate service"
+        # log_msg "Stopping outlineGate service"
         # commands to kill application
 }
