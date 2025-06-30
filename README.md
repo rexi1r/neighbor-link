@@ -34,13 +34,24 @@ rerun the build script and the Chisel compilation step will succeed.
 
 ```
 GOOS=linux GOARCH=mipsle GOMIPS=softfloat go install -ldflags="-s -w" github.com/jpillora/chisel@latest
-cp $(go env GOPATH)/bin/linux_mipsle/chisel src/files/usr/bin/chisel
+cp $(go env GOPATH)/bin/linux_mipsle/chisel build/chisel-linux-mipsle
 ```
 
-The compiled binary is stored in `src/files/usr/bin/chisel` and will be
-included in the generated firmware images. When this binary exists on the
-router, the init scripts use it directly and skip downloading Chisel at run
-time.
+The compiled binary is stored in `src/build/chisel-linux-mipsle` alongside the
+generated firmware images. It is **not** bundled into the firmware itself.
+After flashing OpenWrt, copy this binary to the router and make it executable:
+
+```
+scp build/chisel-linux-mipsle root@<router-ip>:/usr/bin/chisel
+ssh root@<router-ip> "chmod +x /usr/bin/chisel"
+```
+
+Once installed, restart the Chisel-related services so they pick up the binary
+location:
+
+```
+ssh root@<router-ip> "/etc/init.d/chisel restart && /etc/init.d/outlineGate restart"
+```
 
 To build the firmware images themselves, run the build script with a
 version label and the desired router profile:
