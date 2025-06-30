@@ -41,6 +41,18 @@ included in the generated firmware images. When this binary exists on the
 router, the init scripts use it directly and skip downloading Chisel at run
 time.
 
+To build the firmware images themselves, run the build script with a
+version label and the desired router profile:
+
+```
+cd src
+./build.bash <VERSION> <PROFILE>
+```
+
+All generated `.bin` files are written to `src/build/`. This directory is
+ignored by Git so the firmware artifacts are produced during each build
+instead of being stored in the repository.
+
 ## User Management Enhancements
 Users can limit the number of devices per account using the **Max Devices** field and optionally set a comma separated list of permitted MAC addresses. A helper script `user_stats.sh` prints traffic usage per user based on firewall counters. Stale MAC entries are purged whenever a login occurs so the limit only counts active devices.
 The management page table now lists these values beside each username so administrators can quickly review configured limits.
