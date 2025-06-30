@@ -1,5 +1,5 @@
 const express = require('express');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 const app = express();
 const PORT = 19119;
@@ -15,22 +15,44 @@ const portCount=41
 const o_portRange=52120
 const o_portCount=41
 
+// Simple queue to serialize file access
+const requestQueue = [];
+let processing = false;
+
 app.get('/assign', (req, res) => {
+    requestQueue.push({ req, res });
+    processQueue();
+});
+
+async function processQueue() {
+    if (processing || requestQueue.length === 0) return;
+    const { req, res } = requestQueue.shift();
+    processing = true;
+    try {
+        await handleAssign(req, res);
+    } finally {
+        processing = false;
+        processQueue();
+    }
+}
+
+async function handleAssign(req, res) {
     const token = req.query.token;
     if (!token) {
-        return res.json({ code: 0, port: null });
+        res.json({ code: 0, port: null });
+        return;
     }
 
-    const users = JSON.parse(fs.readFileSync(userFilePath, 'utf8'));
-    const assignedPorts = JSON.parse(fs.readFileSync(portFilePath, 'utf8'));
-    const o_assignedPorts = JSON.parse(fs.readFileSync(o_portFilePath, 'utf8'));
+    const users = JSON.parse(await fs.readFile(userFilePath, 'utf8'));
+    const assignedPorts = JSON.parse(await fs.readFile(portFilePath, 'utf8'));
+    const o_assignedPorts = JSON.parse(await fs.readFile(o_portFilePath, 'utf8'));
 
     // Reverse the token to get the password
     const password = token.split('').reverse().join('');
     users[`${token}:${password}`] = [""];
 
-    // Write to user.json
-    fs.writeFileSync(userFilePath, JSON.stringify(users, null, 2));
+    // Write to user.json atomically
+    await atomicWrite(userFilePath, JSON.stringify(users, null, 2));
 
     let port = assignedPorts[token];
     if (!port) {
@@ -45,8 +67,8 @@ app.get('/assign', (req, res) => {
         port = availablePorts[Math.floor(Math.random() * availablePorts.length)];
         assignedPorts[token] = port;
 
-        // Write to assignedport.json
-        fs.writeFileSync(portFilePath, JSON.stringify(assignedPorts, null, 2));
+        // Write to assignedport.json atomically
+        await atomicWrite(portFilePath, JSON.stringify(assignedPorts, null, 2));
     }
 
     let o_port = o_assignedPorts[token];
@@ -62,34 +84,44 @@ app.get('/assign', (req, res) => {
         o_port = availablePorts[Math.floor(Math.random() * availablePorts.length)];
         o_assignedPorts[token] = o_port;
 
-        // Write to assignedport.json
-        fs.writeFileSync(o_portFilePath, JSON.stringify(o_assignedPorts, null, 2));
+        // Write to assignedport.json atomically
+        await atomicWrite(o_portFilePath, JSON.stringify(o_assignedPorts, null, 2));
     }
 
     res.json({ code: 1, port: port, outlineport: o_port });
-});
+}
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+async function startServer() {
+    await checkAndCreateFile(userFilePath);
+    await checkAndCreateFile(portFilePath);
+    await checkAndCreateFile(o_portFilePath);
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
 
 
 
 // Function to check and create file with empty JSON object
-function checkAndCreateFile(filePath) {
-    if (!fs.existsSync(filePath)) {
-        const dir = path.dirname(filePath);
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true });
-        }
-        fs.writeFileSync(filePath, '{}', 'utf8');
-        console.log(`Created file: ${filePath}`);
-    } else {
+async function checkAndCreateFile(filePath) {
+    try {
+        await fs.access(filePath);
         console.log(`File already exists: ${filePath}`);
+    } catch {
+        const dir = path.dirname(filePath);
+        await fs.mkdir(dir, { recursive: true });
+        await fs.writeFile(filePath, '{}', 'utf8');
+        console.log(`Created file: ${filePath}`);
     }
 }
 
-// Check and create files
-checkAndCreateFile(userFilePath);
-checkAndCreateFile(portFilePath);
-checkAndCreateFile(o_portFilePath);
+async function atomicWrite(filePath, data) {
+    const tempPath = `${filePath}.tmp`;
+    await fs.writeFile(tempPath, data);
+    await fs.rename(tempPath, filePath);
+}
+
+startServer().catch(err => {
+    console.error('Failed to start server:', err);
+    process.exit(1);
+});
