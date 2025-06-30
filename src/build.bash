@@ -28,7 +28,7 @@ EXCLUDE_PACKAGES='-dnsmasq -wpad-basic-mbedtls'
 # Included Packages
 INCLUDE_PACKAGES='curl dnsmasq-full luci luci-base iwinfo wireguard-tools kmod-nft-core kmod-nft-fib kmod-nft-nat kmod-nft-offload mtd ubus ubusd rpcd rpcd-mod-file rpcd-mod-iwinfo uci uhttpd uhttpd-mod-ubus gnupg tinyproxy jq coreutils-stat coreutils-nohup lua luasocket uhttpd-mod-lua coreutils-base64 wpad-openssl pbr kmod-br-netfilter kmod-ipt-physdev iptables-mod-physdev'
 
-FILES="../files"
+FILES="files"
 
 BUILD_DIR="build"
 rm -rf $BUILD_DIR
@@ -61,7 +61,7 @@ for profile in $profiles; do
 
   # Build chisel for routers
   GOOS=linux GOARCH=mipsle GOMIPS=softfloat go install -ldflags="-s -w" github.com/jpillora/chisel@latest
-  cp "$(go env GOPATH)/bin/linux_mipsle/chisel" ../files/usr/bin/chisel
+  cp "$(go env GOPATH)/bin/linux_mipsle/chisel" files/usr/bin/chisel
 
   sed -i "s/option version .*/option version '$release_version'/" "files/etc/config/routro"
   sed -i "s/option profile .*/option profile '$profile'/" "files/etc/config/routro"
