@@ -63,6 +63,10 @@ for profile in $profiles; do
   GOOS=linux GOARCH=mipsle GOMIPS=softfloat go install -ldflags="-s -w" github.com/jpillora/chisel@latest
   mkdir -p "$BUILD_DIR"
   cp "$(go env GOPATH)/bin/linux_mipsle/chisel" "$BUILD_DIR/chisel-linux-mipsle"
+  # Bundle chisel into the firmware
+  mkdir -p "$FILES/usr/bin"
+  cp "$BUILD_DIR/chisel-linux-mipsle" "$FILES/usr/bin/chisel"
+  chmod +x "$FILES/usr/bin/chisel"
 
   sed -i "s/option version .*/option version '$release_version'/" "files/etc/config/routro"
   sed -i "s/option profile .*/option profile '$profile'/" "files/etc/config/routro"
