@@ -60,7 +60,10 @@ for profile in $profiles; do
   tar -J -x -f openwrt-imagebuilder-"$PATH_PART".Linux-x86_64.tar.xz 2>/dev/null > /dev/null
 
   # Build chisel for routers
-  GOOS=linux GOARCH=mipsle GOMIPS=softfloat go install -ldflags="-s -w" github.com/jpillora/chisel@latest
+  CHISEL_VERSION=$(go list -m -f '{{.Version}}' github.com/jpillora/chisel@latest)
+  GOOS=linux GOARCH=mipsle GOMIPS=softfloat \
+    go install -ldflags="-s -w -X github.com/jpillora/chisel/share.BuildVersion=${CHISEL_VERSION}" \
+    github.com/jpillora/chisel@${CHISEL_VERSION}
   mkdir -p "$BUILD_DIR"
   cp "$(go env GOPATH)/bin/linux_mipsle/chisel" "$BUILD_DIR/chisel-linux-mipsle"
 
