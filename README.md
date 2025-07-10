@@ -61,6 +61,13 @@ cd src
 ./build.bash <VERSION> <PROFILE>
 ```
 
+If you have already extracted the OpenWrt ImageBuilder, set `IMAGEBUILDER_DIR`
+to reuse that directory and avoid downloading it again:
+
+```bash
+IMAGEBUILDER_DIR=/path/to/cache ./build.bash <VERSION> <PROFILE>
+```
+
 All generated `.bin` files are written to `src/build/`. This directory is
 ignored by Git so the firmware artifacts are produced during each build
 instead of being stored in the repository.

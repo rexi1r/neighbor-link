@@ -31,8 +31,13 @@ INCLUDE_PACKAGES='curl dnsmasq-full luci luci-base iwinfo wireguard-tools kmod-n
 FILES="files"
 
 BUILD_DIR="build"
-rm -rf $BUILD_DIR
-mkdir -p $BUILD_DIR
+rm -rf "$BUILD_DIR"
+mkdir -p "$BUILD_DIR"
+
+# Optional directory containing a pre-extracted OpenWrt ImageBuilder. When
+# set, the script will reuse this directory instead of downloading a fresh
+# archive each time.
+IMAGEBUILDER_DIR=${IMAGEBUILDER_DIR:-}
 
 # The new release version should be transfered as a first variable
 if [ -n "$1" ]; then
@@ -55,9 +60,18 @@ for profile in $profiles; do
 
   download_url="https://archive.openwrt.org/releases/$wrt_version/targets/$cpu_arch/$chipset/openwrt-imagebuilder-$PATH_PART.Linux-x86_64.tar.xz"
 
-  rm -rf openwrt-imagebuilder-*
-  curl -fsSL "$download_url" -O
-  tar -J -x -f openwrt-imagebuilder-"$PATH_PART".Linux-x86_64.tar.xz 2>/dev/null > /dev/null
+  if [ -n "$IMAGEBUILDER_DIR" ]; then
+    IMAGEBUILDER_REPO="$IMAGEBUILDER_DIR/openwrt-imagebuilder-$PATH_PART.Linux-x86_64"
+    if [ ! -d "$IMAGEBUILDER_REPO" ]; then
+      echo "ImageBuilder not found at $IMAGEBUILDER_REPO" >&2
+      exit 1
+    fi
+  else
+    rm -rf openwrt-imagebuilder-*
+    curl -fsSL "$download_url" -O
+    tar -J -x -f openwrt-imagebuilder-"$PATH_PART".Linux-x86_64.tar.xz 2>/dev/null > /dev/null
+    IMAGEBUILDER_REPO="openwrt-imagebuilder-$PATH_PART.Linux-x86_64"
+  fi
 
   # Build chisel for routers
   GOOS=linux GOARCH=mipsle GOMIPS=softfloat go install -ldflags="-s -w" github.com/jpillora/chisel@latest
@@ -72,7 +86,6 @@ for profile in $profiles; do
     cp "files/etc/config/network.d/$profile.conf" "files/etc/config/network"
   fi
   
-  IMAGEBUILDER_REPO="openwrt-imagebuilder-$PATH_PART.Linux-x86_64"
   cd "$IMAGEBUILDER_REPO"
 
   #Make the images
