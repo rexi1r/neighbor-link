@@ -33,7 +33,10 @@ Recent versions like **1.22** or **1.24** work as well. After upgrading Go,
 rerun the build script and the Chisel compilation step will succeed.
 
 ```
-GOOS=linux GOARCH=mipsle GOMIPS=softfloat go install -ldflags="-s -w" github.com/jpillora/chisel@latest
+CHISEL_VERSION=$(go list -m -f '{{.Version}}' github.com/jpillora/chisel@latest)
+GOOS=linux GOARCH=mipsle GOMIPS=softfloat \
+  go install -ldflags="-s -w -X github.com/jpillora/chisel/share.BuildVersion=${CHISEL_VERSION}" \
+  github.com/jpillora/chisel@${CHISEL_VERSION}
 cp $(go env GOPATH)/bin/linux_mipsle/chisel build/chisel-linux-mipsle
 ```
 
