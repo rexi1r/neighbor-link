@@ -41,13 +41,8 @@ cp $(go env GOPATH)/bin/linux_mipsle/chisel build/chisel-linux-mipsle
 ```
 
 The compiled binary is stored in `src/build/chisel-linux-mipsle` alongside the
-generated firmware images. It is **not** bundled into the firmware itself.
-After flashing OpenWrt, copy this binary to the router and make it executable:
-
-```
-scp build/chisel-linux-mipsle root@<router-ip>:/usr/bin/chisel
-ssh root@<router-ip> "chmod +x /usr/bin/chisel"
-```
+generated firmware images and is now bundled into the firmware at
+`/usr/bin/chisel` with executable permissions already set.
 
 Once installed, restart the Chisel-related services so they pick up the binary
 location:
