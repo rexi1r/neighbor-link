@@ -247,7 +247,8 @@ chmod +x /www/portal/auth.lua
 /etc/init.d/tinyproxy disable
 
 /etc/init.d/uhttpd restart
-/etc/init.d/dropbear restart 
+/etc/init.d/dropbear enable
+/etc/init.d/dropbear restart
 
 rm -f /etc/rc.local
 reboot
