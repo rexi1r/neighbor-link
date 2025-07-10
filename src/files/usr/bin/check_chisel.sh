@@ -2,32 +2,32 @@
 
 
 LOGFILE=/var/log/chisel.log
-# PROCESS_LOG="/var/log/chisel_process.log"
+PROCESS_LOG="/var/log/chisel_process.log"
 
-#init_process_log() {
-#    [ -f "$PROCESS_LOG" ] || { touch "$PROCESS_LOG" && chmod 600 "$PROCESS_LOG"; }
-#    if [ $(stat -c%s "$PROCESS_LOG" 2>/dev/null || echo 0) -gt 1000000 ]; then
-#        mv "$PROCESS_LOG" "$PROCESS_LOG.1" 2>/dev/null
-#        touch "$PROCESS_LOG" && chmod 600 "$PROCESS_LOG"
-#    fi
-#}
+init_process_log() {
+    [ -f "$PROCESS_LOG" ] || { touch "$PROCESS_LOG" && chmod 600 "$PROCESS_LOG"; }
+    if [ $(stat -c%s "$PROCESS_LOG" 2>/dev/null || echo 0) -gt 1000000 ]; then
+        mv "$PROCESS_LOG" "$PROCESS_LOG.1" 2>/dev/null
+        touch "$PROCESS_LOG" && chmod 600 "$PROCESS_LOG"
+    fi
+}
 
-#log_msg() {
-#    init_process_log
-#    echo "$(date '+%Y-%m-%d %H:%M:%S') $1" >> "$PROCESS_LOG"
-#}
+log_msg() {
+    init_process_log
+    echo "$(date '+%Y-%m-%d %H:%M:%S') $1" >> "$PROCESS_LOG"
+}
 
 if [ "$1" == "outline" ];then
     LOGFILE=/var/log/outline-gate.log
 fi
 
 # Indicate detection check
-# log_msg "Checking status from $LOGFILE"
+log_msg "Checking status from $LOGFILE"
 
 # Exit early if the log file hasn't been created yet
 if [ ! -f "$LOGFILE" ]; then
     echo "unknown"
-    # log_msg "Log file $LOGFILE missing"
+    log_msg "Log file $LOGFILE missing"
     exit 0
 fi
 
@@ -50,4 +50,4 @@ while IFS= read -r line; do
 done < <(grep -i "Connect" $LOGFILE)
 
 echo "$last_status"
-# log_msg "Status result: $last_status"
+log_msg "Status result: $last_status"
