@@ -28,7 +28,7 @@ EXCLUDE_PACKAGES='-dnsmasq -wpad-basic-mbedtls'
 # Included Packages
 INCLUDE_PACKAGES='curl dnsmasq-full luci luci-base iwinfo wireguard-tools kmod-nft-core kmod-nft-fib kmod-nft-nat kmod-nft-offload mtd ubus ubusd rpcd rpcd-mod-file rpcd-mod-iwinfo uci uhttpd uhttpd-mod-ubus gnupg tinyproxy jq coreutils-stat coreutils-nohup lua luasocket uhttpd-mod-lua coreutils-base64 wpad-openssl pbr kmod-br-netfilter kmod-ipt-physdev iptables-mod-physdev'
 
-FILES="files"
+FILES="../files"
 
 BUILD_DIR="build"
 rm -rf $BUILD_DIR
