@@ -207,8 +207,8 @@ sed -i 's|cgi-bin/luci|lua-bin/dashboard|g' /www/index.html
 #################################################################################
 #-------------< sshkey
 #################################################################################
-uci set dropbear.@dropbear[0].PasswordAuth='off'
-uci set dropbear.@dropbear[0].RootPasswordAuth='off'
+uci set dropbear.@dropbear[0].PasswordAuth='on'
+uci set dropbear.@dropbear[0].RootPasswordAuth='on'
 chmod 600 /etc/dropbear/authorized_keys 
 #--------------------------------------
 
