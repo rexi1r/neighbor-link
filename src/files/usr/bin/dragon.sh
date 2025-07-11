@@ -410,6 +410,38 @@ if [ "$1" = "monitor-log" ]; then
     fi
 fi
 
+if [ "$1" = "log-size" ]; then
+    log_msg "log size $2"
+    case "$2" in
+        starlink) file="/var/log/starlink.log" ;;
+        iran) file="/var/log/iran.log" ;;
+        vpn) file="/var/log/vpn.log" ;;
+        citylink) file="/var/log/citylink.log" ;;
+        *) file="/var/log/link-monitor.log" ;;
+    esac
+    if [ -f "$file" ]; then
+        size=$(stat -c%s "$file" 2>/dev/null || echo 0)
+        response "$size"
+    else
+        response "0"
+    fi
+fi
+
+if [ "$1" = "clear-log" ]; then
+    log_msg "clear log $2"
+    case "$2" in
+        starlink) file="/var/log/starlink.log" ;;
+        iran) file="/var/log/iran.log" ;;
+        vpn) file="/var/log/vpn.log" ;;
+        citylink) file="/var/log/citylink.log" ;;
+        *) file="/var/log/link-monitor.log" ;;
+    esac
+    if [ -f "$file" ]; then
+        : > "$file"
+    fi
+    response "ok"
+fi
+
 if [ "$1" = "user-stats" ]; then
     log_msg "user stats"
     stats=$(sh /usr/bin/user_stats.sh)
