@@ -24,8 +24,12 @@ elif [ "$MODE" = "default" ]; then
     [ -f "$DEFAULT_FILE" ] && dest_addr=$(cat "$DEFAULT_FILE")
 fi
 
-[ -f "$BLOCKLIST_FILE" ] && block_addr=$(grep -v '^#' "$BLOCKLIST_FILE" | tr '\n' ' ')
-[ -n "$block_addr" ] && dest_addr="$dest_addr $block_addr"
+if [ -f "$BLOCKLIST_FILE" ]; then
+    block_addr=$(grep -v '^#' "$BLOCKLIST_FILE" | tr '\n' ' ')
+    dest_addr="$dest_addr $block_addr"
+fi
+dest_addr=$(echo "$dest_addr" | xargs)
+
 
 if [ -n "$dest_addr" ]; then
     uci set pbr.@policy[0].dest_addr="$dest_addr"
