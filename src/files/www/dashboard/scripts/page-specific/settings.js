@@ -2,8 +2,10 @@ var guestSsid = document.getElementById('wifi-ssid');
 var guestPassword = document.getElementById('wifi-password');
 var guestUpdate = document.getElementById('wifi-update');
 var routingModeSelect = document.getElementById('routing-mode');
+
 const killSwitchEnable = document.getElementById('kill-switch-enable');
 const killSwitchLabel = document.getElementById('kill-switch-enable-label');
+
 
 
 function validateSSID(ssid) {
@@ -83,15 +85,17 @@ routingModeSelect.onchange = async function(e){
 }
 
 killSwitchEnable.onclick = async function(e){
-    setKillSwitchStatus(killSwitchEnable.checked);
+    setKillSwitchStatus(killSwitchEnable.checked)
     if(killSwitchEnable.checked){
-        loading(true,"Enabling kill switch");
-        await async_lua_call("dragon.sh","killswitch-on");
+        loading(true,"Enabling kill switch")
+        await async_lua_call("dragon.sh","killswitch-on")
     }else{
-        loading(true,"Disabling kill switch");
-        await async_lua_call("dragon.sh","killswitch-off");
+        loading(true,"Disabling kill switch")
+        await async_lua_call("dragon.sh","killswitch-off")
     }
-    await readKillSwitchStatus();
+    await readKillSwitchStatus()
+    loading(false)
+
 }
 
 function setKillSwitchStatus(status){

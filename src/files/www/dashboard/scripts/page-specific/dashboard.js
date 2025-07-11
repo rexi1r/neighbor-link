@@ -3,7 +3,9 @@
 const vpnStauts = document.getElementById("connection-status")
 const vpnShield = document.getElementById("vpn-shield")
 const ipAddress = document.getElementById("ip-address")
+
 const internetProvider = document.getElementById("internet-provider")
+
 
 const btnStarlink = document.getElementById('starlink-btn')
 const btnIran = document.getElementById('iran-btn')
@@ -257,7 +259,6 @@ async function getConfig(){
     }else{
         updateReach("disable")
     }
-}
 
 
 document.getElementById('en-btn').addEventListener('click', function() {
