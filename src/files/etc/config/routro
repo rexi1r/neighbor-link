@@ -37,3 +37,5 @@ config ireach 'ireach'
     option pass '-'
 
     
+config routing 'routing'
+    option mode 'default'

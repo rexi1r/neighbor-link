@@ -399,6 +399,15 @@ if [ "$1" = "user-online" ]; then
     response "$online"
 fi
 
+if [ "$1" = "routing-mode" ]; then
+    MODE="$2"
+    [ -z "$MODE" ] && MODE="default"
+    uci set routro.routing.mode="$MODE"
+    uci commit routro
+    /usr/bin/update_geoip.sh >/dev/null 2>&1 &
+    response "ok"
+fi
+
 if [ "$1" == "check-link" ];then
     log_msg "check link"
     result=$(sh /usr/bin/check_link.sh "$2" "$3")

@@ -1,6 +1,7 @@
 var guestSsid = document.getElementById('wifi-ssid');
 var guestPassword = document.getElementById('wifi-password');
 var guestUpdate = document.getElementById('wifi-update');
+var routingModeSelect = document.getElementById('routing-mode');
 
 
 function validateSSID(ssid) {
@@ -61,5 +62,20 @@ async function wifiInfo(){
     }
 
     loading(false)
-    return 
+    return
+}
+
+loadRoutingMode();
+
+async function loadRoutingMode(){
+    const CONFIG_INFO=["uci","get",{"config":"routro"}];
+    var info = await async_ubus_call(CONFIG_INFO);
+    if(info && info[1] && info[1].values && info[1].values.routing){
+        routingModeSelect.value = info[1].values.routing.mode;
+    }
+}
+
+routingModeSelect.onchange = async function(e){
+    var mode = routingModeSelect.value;
+    await async_lua_call("dragon.sh","routing-mode "+mode);
 }
