@@ -138,6 +138,29 @@ if [ "$1" == "vpn-off" ];then
     response "$RESULT"
 fi
 
+if [ "$1" == "killswitch-on" ];then
+    log_msg "Enabling kill switch"
+    uci set routro.settings.killswitch='1'
+    uci commit routro
+    /usr/bin/vpn_killswitch.sh block
+    response "Done"
+fi
+
+if [ "$1" == "killswitch-off" ];then
+    log_msg "Disabling kill switch"
+    uci set routro.settings.killswitch='0'
+    uci commit routro
+    /usr/bin/vpn_killswitch.sh unblock
+    response "Done"
+fi
+
+if [ "$1" == "killswitch-status" ];then
+    log_msg "Kill switch status"
+    STATUS=$(uci get routro.settings.killswitch 2>/dev/null)
+    [ -z "$STATUS" ] && STATUS="1"
+    response "$STATUS"
+fi
+
 if [ "$1" == "guest-on" ];then
     log_msg "Enabling guest wifi"
     uci set wireless.guest_2g.disabled="0"

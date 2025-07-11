@@ -28,12 +28,14 @@ check_iface(){
 
 check_vpn(){
     status=$(sh /usr/bin/wg_scripts.sh status)
+    ks=$(uci get routro.settings.killswitch 2>/dev/null)
+    [ -z "$ks" ] && ks="1"
     if echo "$status" | grep '__Connected__' >/dev/null 2>&1; then
         echo "$(date +"%F %T") [vpn] OK" >> "$VPN_LOG"
-        /usr/bin/vpn_killswitch.sh unblock
+        [ "$ks" = "1" ] && /usr/bin/vpn_killswitch.sh unblock
     else
         echo "$(date +"%F %T") [vpn] FAIL" >> "$VPN_LOG"
-        /usr/bin/vpn_killswitch.sh block
+        [ "$ks" = "1" ] && /usr/bin/vpn_killswitch.sh block
     fi
     tail -n 1000 "$VPN_LOG" > "$VPN_LOG.tmp" && mv "$VPN_LOG.tmp" "$VPN_LOG"
 }
