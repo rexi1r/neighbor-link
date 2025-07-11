@@ -2,8 +2,10 @@ var guestSsid = document.getElementById('wifi-ssid');
 var guestPassword = document.getElementById('wifi-password');
 var guestUpdate = document.getElementById('wifi-update');
 var routingModeSelect = document.getElementById('routing-mode');
-var killSwitchEnable = document.getElementById('kill-switch-enable');
-var killSwitchLabel = document.getElementById('kill-switch-enable-label');
+
+const killSwitchEnable = document.getElementById('kill-switch-enable');
+const killSwitchLabel = document.getElementById('kill-switch-enable-label');
+
 
 
 function validateSSID(ssid) {
@@ -93,27 +95,29 @@ killSwitchEnable.onclick = async function(e){
     }
     await readKillSwitchStatus()
     loading(false)
+
 }
 
 function setKillSwitchStatus(status){
     if(status){
-        killSwitchLabel.textContent = "Enable"
-        killSwitchEnable.checked = true
+        killSwitchLabel.textContent = "Enable";
+        killSwitchEnable.checked = true;
     }else{
-        killSwitchLabel.textContent = "Disable"
-        killSwitchEnable.checked = false
+        killSwitchLabel.textContent = "Disable";
+        killSwitchEnable.checked = false;
     }
 }
 
 async function readKillSwitchStatus(){
     const KS_STAT=["file","exec",{"command":"dragon.sh","params":[ "killswitch-status" ]}];
-    var response=await async_ubus_call(KS_STAT)
-    const stdout = response[1].stdout
+    var response=await async_ubus_call(KS_STAT);
+    const stdout = response[1].stdout;
     if(stdout.includes('0')){
-        setKillSwitchStatus(false)
+        setKillSwitchStatus(false);
     }else{
-        setKillSwitchStatus(true)
+        setKillSwitchStatus(true);
     }
+    loading(false);
 }
 
-readKillSwitchStatus()
+readKillSwitchStatus();
