@@ -89,13 +89,14 @@ config rule
         option target 'ACCEPT'                
 
                      
-config rule
+config rule 'guest_mgmt_block'
     option name 'Block Guest Access to Management Interface'
-    option src 'guest_zone'                                      
+    option src 'guest_zone'
     option dest_ip '192.168.0.0/16'  # Specify the router's management IP
     option dest_port '80'
-    option proto 'tcp'                    
+    option proto 'tcp'
     option target 'REJECT'
+    option enabled '1'
 
 config rule                                   
         option name 'Drop_Guest_Traffic'   
