@@ -75,6 +75,15 @@ Users can limit the number of devices per account using the **Max Devices** fiel
 The management page table now lists these values beside each username so administrators can quickly review configured limits.
 Another helper script `online_users.sh` reports how many devices are currently connected for each user by checking the router's ARP table. The dashboard displays this "Online" count next to the configured maximum.
 
+## GeoIP Blocklists
+The weekly cron job `update_geoip.sh` updates the policy based routing rules using
+Iranian IP ranges. To prevent certain addresses from ever traversing the Starlink
+link, add them to `/etc/geoip/blocklist.list` (one address or CIDR per line).
+Entries from this file are always appended to the GeoIP data based on the routing
+`mode` (either `default`, `cidr` or `off`). Even with GeoIP disabled (`off`),
+the blocklist entries are enforced so traffic to those destinations is routed
+through the local `wan` interface instead of Starlink.
+
 ## Monitoring Panel and Dummy Traffic
 A simple monitoring panel shows VNStat bandwidth statistics, including a TX/RX ratio updated every minute by `update_panel.sh`. By default both `update_panel.sh` and the helper script `watch_vnstat.sh` monitor the `eth0` interface, but you can override this by setting the `NL_INTERFACE` environment variable so the TX/RX ratio reflects the correct device. To help keep the ratio reasonable, the helper script `uploader_filler.sh` may upload random data to [transfer.sh](https://transfer.sh) when received traffic greatly exceeds transmitted traffic.
 `uploader_filler.sh` now stores the previous receive and transmit counters in `/var/tmp/uploader_filler_state`. If this file is missing, the current counters are recorded and the script exits without uploading. On subsequent runs it compares the difference in RX and TX bytes since the last invocation and only performs an upload when 80% of the received bytes is still greater than the transmitted bytes. The current counters are always written back to the state file so the next run can determine the delta. The script also respects `NL_INTERFACE` so you can monitor any interface.
