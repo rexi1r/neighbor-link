@@ -292,6 +292,7 @@ async function readKillSwitchStatus(){
     }else{
         setKillSwitchStatus(true)
     }
+    loading(false)
 }
 
 readKillSwitchStatus()
