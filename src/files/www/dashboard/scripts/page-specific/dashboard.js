@@ -271,6 +271,7 @@ killSwitchEnable.onclick = async function(e){
         await async_lua_call("dragon.sh","killswitch-off")
     }
     await readKillSwitchStatus()
+    loading(false)
 }
 
 function setKillSwitchStatus(status){
