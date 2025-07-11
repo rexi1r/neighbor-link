@@ -5,6 +5,8 @@ var routingModeSelect = document.getElementById('routing-mode');
 
 const killSwitchEnable = document.getElementById('kill-switch-enable');
 const killSwitchLabel = document.getElementById('kill-switch-enable-label');
+const guestBlockEnable = document.getElementById('guest-block-enable');
+const guestBlockLabel = document.getElementById('guest-block-enable-label');
 
 
 
@@ -98,6 +100,42 @@ killSwitchEnable.onclick = async function(e){
 
 }
 
+guestBlockEnable.onclick = async function(e){
+    setGuestBlockStatus(guestBlockEnable.checked)
+    if(guestBlockEnable.checked){
+        loading(true,"Blocking guest access")
+        await async_lua_call("dragon.sh","guest-mgmt-block-on")
+    }else{
+        loading(true,"Allowing guest access")
+        await async_lua_call("dragon.sh","guest-mgmt-block-off")
+    }
+    await readGuestBlockStatus()
+    loading(false)
+
+}
+
+function setGuestBlockStatus(status){
+    if(status){
+        guestBlockLabel.textContent = "Enable";
+        guestBlockEnable.checked = true;
+    }else{
+        guestBlockLabel.textContent = "Disable";
+        guestBlockEnable.checked = false;
+    }
+}
+
+async function readGuestBlockStatus(){
+    const GB_STAT=["file","exec",{"command":"dragon.sh","params":[ "guest-mgmt-block-status" ]}];
+    var response=await async_ubus_call(GB_STAT);
+    const stdout = response[1].stdout;
+    if(stdout.includes('0')){
+        setGuestBlockStatus(false);
+    }else{
+        setGuestBlockStatus(true);
+    }
+    loading(false);
+}
+
 function setKillSwitchStatus(status){
     if(status){
         killSwitchLabel.textContent = "Enable";
@@ -121,3 +159,4 @@ async function readKillSwitchStatus(){
 }
 
 readKillSwitchStatus();
+readGuestBlockStatus();

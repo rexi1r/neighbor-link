@@ -201,6 +201,29 @@ if [ "$1" == "guest-set" ];then
     response "Done"
 fi
 
+if [ "$1" == "guest-mgmt-block-on" ];then
+    log_msg "Blocking guest access to management interface"
+    uci set firewall.guest_mgmt_block.enabled='1'
+    uci commit firewall
+    /etc/init.d/firewall reload
+    response "Done"
+fi
+
+if [ "$1" == "guest-mgmt-block-off" ];then
+    log_msg "Allowing guest access to management interface"
+    uci set firewall.guest_mgmt_block.enabled='0'
+    uci commit firewall
+    /etc/init.d/firewall reload
+    response "Done"
+fi
+
+if [ "$1" == "guest-mgmt-block-status" ];then
+    log_msg "Guest management block status"
+    STATUS=$(uci get firewall.guest_mgmt_block.enabled 2>/dev/null)
+    [ -z "$STATUS" ] && STATUS="1"
+    response "$STATUS"
+fi
+
 if [ "$1" == "wifi-set" ];then
     ssid=$2
     pass=$3
