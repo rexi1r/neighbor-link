@@ -4,8 +4,6 @@ const vpnStauts = document.getElementById("connection-status")
 const vpnShield = document.getElementById("vpn-shield")
 const ipAddress = document.getElementById("ip-address")
 const internetProvider = document.getElementById("internet-provider")
-const killSwitchEnable = document.getElementById('kill-switch-enable')
-const killSwitchLabel = document.getElementById('kill-switch-enable-label')
 
 const btnStarlink = document.getElementById('starlink-btn')
 const btnIran = document.getElementById('iran-btn')
@@ -261,41 +259,6 @@ async function getConfig(){
     }
 }
 
-killSwitchEnable.onclick = async function(e){
-    setKillSwitchStatus(killSwitchEnable.checked)
-    if(killSwitchEnable.checked){
-        loading(true,"Enabling kill switch")
-        await async_lua_call("dragon.sh","killswitch-on")
-    }else{
-        loading(true,"Disabling kill switch")
-        await async_lua_call("dragon.sh","killswitch-off")
-    }
-    await readKillSwitchStatus()
-}
-
-function setKillSwitchStatus(status){
-    if(status){
-        killSwitchLabel.textContent = "Enable"
-        killSwitchEnable.checked = true
-    }else{
-        killSwitchLabel.textContent = "Disable"
-        killSwitchEnable.checked = false
-    }
-}
-
-async function readKillSwitchStatus(){
-    const KS_STAT=["file","exec",{"command":"dragon.sh","params":[ "killswitch-status" ]}];
-    var response=await async_ubus_call(KS_STAT)
-    const stdout = response[1].stdout
-    if(stdout.includes('0')){
-        setKillSwitchStatus(false)
-    }else{
-        setKillSwitchStatus(true)
-    }
-    loading(false)
-}
-
-readKillSwitchStatus()
 
 document.getElementById('en-btn').addEventListener('click', function() {
     document.getElementById('english-alert').classList.remove('d-none');

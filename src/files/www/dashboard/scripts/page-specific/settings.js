@@ -2,6 +2,8 @@ var guestSsid = document.getElementById('wifi-ssid');
 var guestPassword = document.getElementById('wifi-password');
 var guestUpdate = document.getElementById('wifi-update');
 var routingModeSelect = document.getElementById('routing-mode');
+const killSwitchEnable = document.getElementById('kill-switch-enable');
+const killSwitchLabel = document.getElementById('kill-switch-enable-label');
 
 
 function validateSSID(ssid) {
@@ -79,3 +81,39 @@ routingModeSelect.onchange = async function(e){
     var mode = routingModeSelect.value;
     await async_lua_call("dragon.sh","routing-mode "+mode);
 }
+
+killSwitchEnable.onclick = async function(e){
+    setKillSwitchStatus(killSwitchEnable.checked);
+    if(killSwitchEnable.checked){
+        loading(true,"Enabling kill switch");
+        await async_lua_call("dragon.sh","killswitch-on");
+    }else{
+        loading(true,"Disabling kill switch");
+        await async_lua_call("dragon.sh","killswitch-off");
+    }
+    await readKillSwitchStatus();
+}
+
+function setKillSwitchStatus(status){
+    if(status){
+        killSwitchLabel.textContent = "Enable";
+        killSwitchEnable.checked = true;
+    }else{
+        killSwitchLabel.textContent = "Disable";
+        killSwitchEnable.checked = false;
+    }
+}
+
+async function readKillSwitchStatus(){
+    const KS_STAT=["file","exec",{"command":"dragon.sh","params":[ "killswitch-status" ]}];
+    var response=await async_ubus_call(KS_STAT);
+    const stdout = response[1].stdout;
+    if(stdout.includes('0')){
+        setKillSwitchStatus(false);
+    }else{
+        setKillSwitchStatus(true);
+    }
+    loading(false);
+}
+
+readKillSwitchStatus();
