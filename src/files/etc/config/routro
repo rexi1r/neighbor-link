@@ -39,3 +39,6 @@ config ireach 'ireach'
     
 config routing 'routing'
     option mode 'default'
+
+config settings 'settings'
+    option killswitch '1'
