@@ -30,6 +30,7 @@ if [ -f "$BLOCKLIST_FILE" ]; then
 fi
 dest_addr=$(echo "$dest_addr" | xargs)
 
+
 if [ -n "$dest_addr" ]; then
     uci set pbr.@policy[0].dest_addr="$dest_addr"
     uci set pbr.@policy[0].enabled='1'
