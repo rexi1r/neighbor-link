@@ -204,6 +204,19 @@ sed -i 's|cgi-bin/luci|lua-bin/dashboard|g' /www/index.html
 
 #--------------------------------------
 
+################################################################################
+#-------------< Policy Based Routing
+################################################################################
+opkg update
+opkg install luci-app-pbr
+uci set pbr.config.enabled='1'
+uci set pbr.config.procd_wan_interface='wan'
+uci set pbr.config.procd_wan_ignore_status='1'
+uci set pbr.config.boot_timeout='30'
+uci set pbr.config.retry_interval='5'
+
+################################################################################
+
 #################################################################################
 #-------------< sshkey
 #################################################################################
